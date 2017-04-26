@@ -12,19 +12,19 @@ cor2_v:             Mean speed of selected candidate COR 2 event [ms^-1]
 cor2_vsigma:        Error in mean speed of selected candidate COR 2 event [ms^-1]
 cor2_vmin:          Minimum speed of selected candidate COR 2 event [ms^-1]
 cor2_vmax:          Maximum speed of selected candidate COR 2 event [ms^-1]
-cor2_type:          
-cor2_halo:          
+cor2_type:          'CME' or 'Flow' as defined by the CACTUS catalogue      
+cor2_halo:          Halo events as defined by the CACTUS catalogue         
 fl_ts:              Search window start time to find corresponding flare event   
 fl_ts:              Search window end time to find corresponding flare event 
-fl_obstype
-fl_starttime
-fl_endtime
-fl_peaktime
-fl_goes
-fl_loc
-srs_time
-srs_no
-srs_loc
+fl_obstype:         Source of flare event (GEVLOC, SWPC, or RHESSI flare list)
+fl_starttime:       Start time of selected candidate flare event
+fl_endtime:         End time of selected candidate flare event
+fl_peaktime:        Peak time of selected candidate flare event
+fl_goes:            GOES class of selected candidate flare event
+fl_loc:             Heliographic latitude and longitude of selected candidate flare event
+srs_time:           Issue time of SWPC Solar Region Summary corresponding to flare event
+srs_no:             SWPC-determined active region number of candidate region
+srs_loc:            SWPC-determined heliographic latitude and longitude of region
 srs_mcintosh:       SWPC-determined Zurich classification of the group (McIntosh 1990) 
 srs_hale:           SWPC-determined Zurich classification of the group (McIntosh 1990)
 srs_area:           SWPC-determined active region total corrected area [Millionths of a solar hemisphere]
@@ -47,3 +47,5 @@ smart_psllength:    Polarity separation line length of SMART region [Megameters]
 smart_rvalue:       R value of SMART region (Schrijver 2007) [Maxwell]
 smart_wlsg:         WLSG value of SMART region (Falconer et al. 2008) [Gauss per Megameter]
 smart_bipolesep:    Bipolar separation of SMART region [Megameters]
+
+Note: any catalogue element that has no data associated will either have a blank (' ') string, or a 0. number.
