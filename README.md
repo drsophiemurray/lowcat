@@ -19,13 +19,13 @@ In order to run SMART locally, the following repositries need to be cloned:
 
 SMART has been integrated with ``helcats_list.pro`` to provide active region properties for the [CME database](http://www.helcats-fp7.eu/catalogues/wp2_cat.html) created for the HELCATS project. The main functions of note are:
 *  ``helcats_list.pro``
-  *  The main code calling Pietro's CME identification and other developed codes listed below. Keywords allow choice of what flare databases to search. It is currently set up to run on WP2 data from HELCATS, but this is easily changeable.
+    *  The main code calling Pietro's CME identification and other developed codes listed below. Keywords allow choice of what flare databases to search. It is currently set up to run on WP2 data from HELCATS, but this is easily changeable.
 *  ``get_cme_info.pro``
-  *  Pietro's helcats_list_new.pro as a function, outputting CME information from the CACTUS database based on STEREO/HI input info.
+    *  Pietro's helcats_list_new.pro as a function, outputting CME information from the CACTUS database based on STEREO/HI input info.
 *  ``get_flarear_info.pro``
-  *  Using CME information get corresponding flare event information (from GEVLOC/SWPC/HESSI lists) and AR source information (from NOAA Solar Region Summary). The current version checks the CME PA vs flare lat/lon position to ensure in correct solar quadrant beyond just matching the time ranges.
+    *  Using CME information get corresponding flare event information (from GEVLOC/SWPC/HESSI lists) and AR source information (from NOAA Solar Region Summary). The current version checks the CME PA vs flare lat/lon position to ensure in correct solar quadrant beyond just matching the time ranges.
 *  ``get_smart_info.pro``
-  * Using identified flare location, run SMART on region to get magnetic properties.
+    * Using identified flare location, run SMART on region to get magnetic properties.
 
 Results are output in .txt, .json, and IDL .sav formats. Computation time on Linux Mint 17 Cinnamon 64-bit with Intel Xeon CPU 3.75GHz x4 with 15.6Gb memory was 168 minutes.
 
