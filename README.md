@@ -29,6 +29,8 @@ SMART has been integrated with ``helcats_list.pro`` to provide active region pro
 
 Results are output in .txt, .json, and IDL .sav formats. Computation time on Linux Mint 17 Cinnamon 64-bit with Intel Xeon CPU 3.75GHz x4 with 15.6Gb memory was 168 minutes.
 
+The methods used and resulting catalogue information will be described in a upcoming paper currently in preparation by Murray, S. A., et al.
+
 License
 -------
 
