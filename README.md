@@ -1,9 +1,9 @@
-helcats
+lowcat
 =======
 
 *Obtaining the source regions of CME events determined with STEREO/HI for the FP7 [HELCATS](http://www.helcats-fp7.eu/) project.*
 
-The original code developed by Pietro Zucca outputted a .html file that can currently be viewed on the Rosse Observatory [webpages](http://data.rosseobservatory.ie/helcats/lowcat/). This code has been modified and extended (``helcats_list.pro``) to obtain active region properties also.
+This repository contains the code and resulting data for the LOWCAT catalogue developed during the EU HELCATS project, an automated method to correspond CME events to their solar active region sources. The original code developed by Pietro Zucca outputted a .html file that can currently be viewed on the Rosse Observatory [webpages](http://data.rosseobservatory.ie/helcats/lowcat/). This code has been modified and extended (``helcats_list.pro``) to obtain active region properties also.
 
 The Solar Monitor Active Region Tracker ([SMART](http://arxiv.org/abs/1006.5898)), written by Paul Higgins, has been further developed to provide active region properties for a particular flare event source region. The code ``get_smart_info.pro``, takes the following inputs:
 *  **start_time**: event start time in format DD-Mon-YYYY HH:MM:SS
