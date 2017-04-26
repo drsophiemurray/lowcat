@@ -1,0 +1,49 @@
+hel_id:		    HELCATS ID as listed in HICAT catalogue
+hi_sc:		    STEREO ‘A’ or ‘B’
+hi_time:	    Launch time of STEREO HICAT event
+hi_pan:             Northward position angle of HI event [degrees]  
+hi_pas:             Southward position angle of HI event [degrees]
+cor2_ts:            Search window start time to find corresponding COR 2 event   
+cor2_tf:            Search window end time to find corresponding COR 2 event     
+cor2_time:          Launch time of selected candidate COR 2 event
+cor2_pa:            Position angle of selected candidate COR 2 event [degrees]
+cor2_width:         Angular width of selected candidate COR 2 event [degrees]
+cor2_v:             Mean speed of selected candidate COR 2 event [ms^-1]
+cor2_vsigma:        Error in mean speed of selected candidate COR 2 event [ms^-1]
+cor2_vmin:          Minimum speed of selected candidate COR 2 event [ms^-1]
+cor2_vmax:          Maximum speed of selected candidate COR 2 event [ms^-1]
+cor2_type:          
+cor2_halo:          
+fl_ts:              Search window start time to find corresponding flare event   
+fl_ts:              Search window end time to find corresponding flare event 
+fl_obstype
+fl_starttime
+fl_endtime
+fl_peaktime
+fl_goes
+fl_loc
+srs_time
+srs_no
+srs_loc
+srs_mcintosh:       SWPC-determined Zurich classification of the group (McIntosh 1990) 
+srs_hale:           SWPC-determined Zurich classification of the group (McIntosh 1990)
+srs_area:           SWPC-determined active region total corrected area [Millionths of a solar hemisphere]
+srs_ll:             SWPC-determined longitudinal extent [Heliographic degrees]
+srs_nn:             SWPC-determined total number of visible sunspots in the group
+smart_time:         Time of magnetogram observation used for SMART detection
+smart_hglatlon:     Heliographic latitude and longitude of center of SMART detection
+smart_limb:         If SMART detected region is near solar limb (>60deg = 'II', >70deg = 'III', >80deg = 'IV')
+smart_totflx:       Total magnetic flux of SMART region [Maxwell]
+smart_posflx:       Total magnetic flux in positive polarity part of SMART region [Maxwell]
+smart_negflx:       Total magnetic flux in negative polarity part of SMART region [Maxwell]
+smart_frcflx:       Flux fraction of SMART region, i.e., (POSFLUX – NEGFLX) / TOTFLX
+smart_totarea:      Total magnetic area of SMART region [Millionths of a solar hemisphere]
+smart_posarea:      Total magnetic area of positive polarity part of SMART region [Millionths of a solar hemisphere]
+smart_negarea:      Total magnetic area of negative polarity part of SMART region [Millionths of a solar hemisphere]
+smart_bmin:         Total negative magnetic field strength of SMART region [Gauss]
+smart_bmax:         Total positive magnetic field strength of SMART region [Gauss]
+smart_bmean:        Mean magnetic field strength of SMART region [Gauss]
+smart_psllength:    Polarity separation line length of SMART region [Megameters]    
+smart_rvalue:       R value of SMART region (Schrijver 2007) [Maxwell]
+smart_wlsg:         WLSG value of SMART region (Falconer et al. 2008) [Gauss per Megameter]
+smart_bipolesep:    Bipolar separation of SMART region [Megameters]
