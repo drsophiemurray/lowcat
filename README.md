@@ -17,7 +17,7 @@ In order to run SMART locally, the following repositries need to be cloned:
 *  https://github.com/pohuigin/smart_library
 *  https://github.com/pohuigin/gen_library
 
-SMART has been integrated with ``helcats_list.pro`` to provide active region properties for the [CME database](http://www.helcats-fp7.eu/catalogues/wp2_cat.html) created for the HELCATS project. The main functions of note are:
+SMART has been integrated with ``helcats_list.pro`` to provide active region properties for the [CME database](http://www.helcats-fp7.eu/catalogues/wp2_cat.html) created for the HELCATS project, in particular v3 of the catalogue. The main functions of note are:
 *  ``helcats_list.pro``
     *  The main code calling Pietro's CME identification and other developed codes listed below. Keywords allow choice of what flare databases to search. It is currently set up to run on WP2 data from HELCATS, but this is easily changeable.
 *  ``get_cme_info.pro``
