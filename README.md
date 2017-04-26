@@ -28,3 +28,8 @@ SMART has been integrated with ``helcats_list.pro`` to provide active region pro
   * Using identified flare location, run SMART on region to get magnetic properties.
 
 Results are output in .txt, .json, and IDL .sav formats. Computation time on Linux Mint 17 Cinnamon 64-bit with Intel Xeon CPU 3.75GHz x4 with 15.6Gb memory was 168 minutes.
+
+License
+-------
+
+The content of this project is licensed under the [Creative Commons Attribution 4.0 license](https://creativecommons.org/licenses/by/4.0/), and the underlying source code used to format and display that content is licensed under the [MIT license](https://opensource.org/licenses/mit-license.php).
