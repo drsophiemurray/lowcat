@@ -48,4 +48,4 @@ smart_rvalue:       R value of SMART region (Schrijver 2007) [Maxwell]
 smart_wlsg:         WLSG value of SMART region (Falconer et al. 2008) [Gauss per Megameter]
 smart_bipolesep:    Bipolar separation of SMART region [Megameters]
 
-Note: any catalogue element that has no data associated will either have a blank (' ') string, or a 0. number.
+Note: any catalogue element that has no data associated will either have a blank string (' '), or a zero ('0.').
