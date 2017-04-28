@@ -16,7 +16,7 @@ cor2_type:          'CME' or 'Flow' as defined by the CACTUS catalogue
 cor2_halo:          Halo events as defined by the CACTUS catalogue         
 fl_ts:              Search window start time to find corresponding flare event   
 fl_tf:              Search window end time to find corresponding flare event 
-fl_type:         Source of flare event (GEVLOC, SWPC, or RHESSI flare list)
+fl_type:            Source of flare event (GEVLOC, SWPC, or RHESSI flare list)
 fl_starttime:       Start time of selected candidate flare event
 fl_endtime:         End time of selected candidate flare event
 fl_peaktime:        Peak time of selected candidate flare event
@@ -43,7 +43,7 @@ smart_negarea:      Total magnetic area of negative polarity part of SMART regio
 smart_bmin:         Total negative magnetic field strength of SMART region [Gauss]
 smart_bmax:         Total positive magnetic field strength of SMART region [Gauss]
 smart_bmean:        Mean magnetic field strength of SMART region [Gauss]
-smart_psllen:    Polarity separation line length of SMART region [Megameters]    
+smart_psllen:       Polarity separation line length of SMART region [Megameters]    
 smart_rvalue:       R value of SMART region (Schrijver 2007) [Maxwell]
 smart_wlsg:         WLSG value of SMART region (Falconer et al. 2008) [Gauss per Megameter]
 smart_bipolesep:    Bipolar separation of SMART region [Megameters]
