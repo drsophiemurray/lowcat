@@ -8,9 +8,9 @@ function lmsalssw_search, $
 	polar = 750.
 	
 	; Set up output structure
-	sswstr = {obstype:' ', $
-						starttime: ' ', endtime: ' ', $
-						peaktime: ' ', goes: ' ', flareloc: ' ', $
+	sswstr = {fl_type:' ', $
+						fl_starttime: ' ', fl_endtime: ' ', $
+						fl_peaktime: ' ', fl_goes: ' ', fl_loc: ' ', $
 						flare: 0., hgx: 0., hgy: 0., hcx: 0., hcy: 0.}
 
 	sswstr.hcx = !Values.F_NAN
@@ -112,18 +112,18 @@ function lmsalssw_search, $
 		endelse
 
 		; Output this initial info
-		sswstr.starttime = anytim(ssw_candidate.fstart, /vms)
-		sswstr.endtime = anytim(ssw_candidate.fstop, /vms)
-		sswstr.peaktime = anytim(ssw_candidate.fpeak, /vms)
-		sswstr.goes = ssw_candidate.class
-		sswstr.obstype = 'gevloc'
+		sswstr.fl_starttime = anytim(ssw_candidate.fstart, /vms)
+		sswstr.fl_endtime = anytim(ssw_candidate.fstop, /vms)
+		sswstr.fl_peaktime = anytim(ssw_candidate.fpeak, /vms)
+		sswstr.fl_goes = ssw_candidate.class
+		sswstr.fl_type = 'gevloc'
 
 		; Output position coordinates for later use with SMART
 		if (ssw_candidate.xcen ne 0.) then begin
 			hcx = ssw_candidate.xcen
 			hcy = ssw_candidate.ycen
 			hc2hg, hcx, hcy, hgx, hgy, date = anytim(ssw_candidate.fpeak, /vms)
-			sswstr.flareloc = ssw_candidate.helio
+			sswstr.fl_loc = ssw_candidate.helio
 			sswstr.hcx = hcx
 			sswstr.hcy = hcy
 			sswstr.hgx = hgx

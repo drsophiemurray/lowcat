@@ -23,11 +23,11 @@ function get_smart_info, start_time=start_time, end_time=end_time, peak_time=pea
 	COMMON FOLDERS
 
 	; Set up structure of properties that are wanted
-	arstr = {time:' ', hglatlon:' ', limb:' ', $
-						totflx:0., posflx:0., negflx:0., frcflx:0d, $
-						totarea:0., posarea:0., negarea:0., $
-						bmin:0., bmax:0., bmean:0., $
-						psllength:0., rvalue:0., wlsg:0., bipolesep_mm:0.}
+	arstr = {smart_time:' ', smart_hglatlon:' ', lsmart_imb:' ', $
+						smart_totflx:0., smart_posflx:0., smart_negflx:0., smart_frcflx:0d, $
+						smart_totarea:0., smart_posarea:0., smart_negarea:0., $
+						smart_bmin:0., smart_bmax:0., smart_bmean:0., $
+						smart_psllen:0., smart_rvalue:0., smart_wlsg:0., smart_bipolesep:0.}
 
 	; If no locations given, then dont bother running below code
 	if finite(hgx) eq 0. or finite(hgy) eq 0. then return, arstr
@@ -218,27 +218,27 @@ function get_smart_info, start_time=start_time, end_time=end_time, peak_time=pea
 	set_plot,'x'
 
 	; ---- Output results ----
-	arstr.time = thismap.time
-	arstr.hglatlon = arlocstring
+	arstr.smart_time = thismap.time
+	arstr.smart_hglatlon = arlocstring
 	switch 1 of
-		(fix(posprop[arno].hglonbnd) GE 60.) or (fix(posprop[arno].hglonbnd) LE -60.): arstr.limb = 'II' 
-		(fix(posprop[arno].hglonbnd) GE 70.) or (fix(posprop[arno].hglonbnd) LE -70.): arstr.limb = 'III' 
-		(fix(posprop[arno].hglonbnd) GE 80.) or (fix(posprop[arno].hglonbnd) LE -80.): arstr.limb = 'IV' 
+		(fix(posprop[arno].hglonbnd) GE 60.) or (fix(posprop[arno].hglonbnd) LE -60.): arstr.smart_limb = 'II' 
+		(fix(posprop[arno].hglonbnd) GE 70.) or (fix(posprop[arno].hglonbnd) LE -70.): arstr.smart_limb = 'III' 
+		(fix(posprop[arno].hglonbnd) GE 80.) or (fix(posprop[arno].hglonbnd) LE -80.): arstr.smart_limb = 'IV' 
 	endswitch
-	arstr.totflx = magprop[arno].totflx
-	arstr.posflx = magprop[arno].posflx
-	arstr.negflx = magprop[arno].negflx
-	arstr.frcflx = magprop[arno].frcflx	
-	arstr.totarea = magprop[arno].totarea / 3.
-	arstr.posarea = magprop[arno].posarea / 3.
-	arstr.negarea = magprop[arno].negarea / 3.
-	arstr.bmin = magprop[arno].bmin
-	arstr.bmax = magprop[arno].bmax
-	arstr.bmean = magprop[arno].bmean
-	arstr.psllength = pslprop[arno].psllength
-	arstr.rvalue = pslprop[arno].rvalue
-	arstr.wlsg = pslprop[arno].wlsg
-	arstr.bipolesep_mm = pslprop[arno].bipolesep_mm
+	arstr.smart_totflx = magprop[arno].totflx
+	arstr.smart_posflx = magprop[arno].posflx
+	arstr.smart_negflx = magprop[arno].negflx
+	arstr.smart_frcflx = magprop[arno].frcflx	
+	arstr.smart_totarea = magprop[arno].totarea / 3.
+	arstr.smart_posarea = magprop[arno].posarea / 3.
+	arstr.smart_negarea = magprop[arno].negarea / 3.
+	arstr.smart_bmin = magprop[arno].bmin
+	arstr.smart_bmax = magprop[arno].bmax
+	arstr.smart_bmean = magprop[arno].bmean
+	arstr.smart_psllen = pslprop[arno].psllength
+	arstr.smart_rvalue = pslprop[arno].rvalue
+	arstr.smart_wlsg = pslprop[arno].wlsg
+	arstr.smart_bipolesep = pslprop[arno].bipolesep_mm
 
 	; Print structure and output
 	header = ['SMART time', 'Location', 'Limb', 'Total flux', 'Pos flux', 'Neg flux', 'Frac flux', 'Mag area', 'Pos area', 'Neg area', 'B_min', 'B_max', 'B mean', 'PSL length', 'R value', 'WLSG', 'Bip_sep']

@@ -8,9 +8,9 @@ function hessi_search_flares, $
 					hcx_range=hcx_range, hcy_range=hcy_range
 					
 	; Set up output structure
-	hessistr = {obstype:' ', $
-						starttime: ' ', endtime: ' ', $
-						peaktime: ' ', goes: ' ', flareloc: ' ', no: 0., $
+	hessistr = {fl_type:' ', $
+						fl_starttime: ' ', fl_endtime: ' ', $
+						fl_peaktime: ' ', fl_goes: ' ', fl_loc: ' ', srs_no: 0., $
 						flare: 0., hgx: 0., hgy: 0., hcx: 0., hcy: 0.}
 
 	hessistr.hcx = !Values.F_NAN
@@ -131,20 +131,20 @@ function hessi_search_flares, $
 			if typename(hessi_candidate) ne 'INT' then hessistr.flare = 1.
 
 			; Output this initial info
-			hessistr.starttime = anytim(hessi_candidate.start_time, /vms)
-			hessistr.endtime = anytim(hessi_candidate.end_time, /vms)
-			hessistr.peaktime = anytim(hessi_candidate.peak_time, /vms)
-			hessistr.goes = STRTRIM(hessi_candidate.goes_class)
-			hessistr.no = hessi_candidate.active_region
-			hessistr.obstype = 'hessi'
+			hessistr.fl_starttime = anytim(hessi_candidate.start_time, /vms)
+			hessistr.fl_endtime = anytim(hessi_candidate.end_time, /vms)
+			hessistr.fl_peaktime = anytim(hessi_candidate.peak_time, /vms)
+			hessistr.fl_goes = STRTRIM(hessi_candidate.goes_class)
+			hessistr.fl_no = hessi_candidate.active_region
+			hessistr.fl_type = 'hessi'
 
 			; Get position coordinates for later use with NOAA SRS and running SMART
 			if hessi_candidate.x_position ne 0. then begin
 				hcx = hessi_candidate.x_position
 				hcy = hessi_candidate.y_position
-				hc2hg, hcx, hcy, hgx, hgy, date = hessistr.peaktime
+				hc2hg, hcx, hcy, hgx, hgy, date = hessistr.fl_peaktime
 				flarelocstring = locint2string(latitude=hgy, longitude=hgx)
-				hessistr.flareloc = flarelocstring
+				hessistr.fl_loc = flarelocstring
 				hessistr.hcx = hcx
 				hessistr.hcy = hcy
 				hessistr.hgx = hgx
@@ -165,20 +165,20 @@ function hessi_search_flares, $
 			if typename(hessi_candidate) ne 'INT' then hessistr.flare = 1.
 
 			; Output this initial info
-			hessistr.starttime = anytim(hessi_candidate.start_time, /vms)
-			hessistr.endtime = anytim(hessi_candidate.end_time, /vms)
-			hessistr.peaktime = anytim(hessi_candidate.peak_time, /vms)
-			hessistr.goes = STRTRIM(hessi_candidate.goes_class)
-			hessistr.no = hessi_candidate.active_region
-			hessistr.obstype = 'hessi'
+			hessistr.fl_starttime = anytim(hessi_candidate.start_time, /vms)
+			hessistr.fl_endtime = anytim(hessi_candidate.end_time, /vms)
+			hessistr.fl_peaktime = anytim(hessi_candidate.peak_time, /vms)
+			hessistr.fl_goes = STRTRIM(hessi_candidate.goes_class)
+			hessistr.srs_no = hessi_candidate.active_region
+			hessistr.fl_type = 'hessi'
 
 			; Get position coordinates for later use with NOAA SRS and running SMART
 			if hessi_candidate.x_position ne 0. then begin
 				hcx = hessi_candidate.x_position
 				hcy = hessi_candidate.y_position
-				hc2hg, hcx, hcy, hgx, hgy, date = hessistr.peaktime
+				hc2hg, hcx, hcy, hgx, hgy, date = hessistr.fl_peaktime
 				flarelocstring = locint2string(latitude=hgy, longitude=hgx)
-				hessistr.flareloc = flarelocstring
+				hessistr.fl_loc = flarelocstring
 				hessistr.hcx = hcx
 				hessistr.hcy = hcy
 				hessistr.hgx = hgx

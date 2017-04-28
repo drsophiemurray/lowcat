@@ -11,9 +11,9 @@ function swpc_search_flares, $
 	polar = 50.
 	
 	; Set up output structure
-	swpcstr = {obstype:' ', $
-						starttime: ' ', endtime: ' ', $
-						peaktime: ' ', goes: ' ', flareloc: ' ', no: 0., $
+	swpcstr = {fl_type:' ', $
+						fl_starttime: ' ', fl_endtime: ' ', $
+						fl_peaktime: ' ', fl_goes: ' ', fl_loc: ' ', srs_no: 0., $
 						flare: 0., hgx: 0., hgy: 0., hcx: 0., hcy: 0.}
 
 	swpcstr.hcx = !Values.F_NAN
@@ -121,20 +121,20 @@ function swpc_search_flares, $
 			if typename(noaa_candidate) ne 'INT' then swpcstr.flare = 1.
 
 			; Output this initial info
-			swpcstr.starttime = noaa_candidate.stime
-			swpcstr.endtime = noaa_candidate.etime
-			swpcstr.peaktime = noaa_candidate.ptime
-			swpcstr.goes = noaa_candidate.magnitude
-			swpcstr.no = noaa_candidate.region
-			swpcstr.obstype = 'swpc'
+			swpcstr.fl_starttime = noaa_candidate.stime
+			swpcstr.fl_endtime = noaa_candidate.etime
+			swpcstr.fl_peaktime = noaa_candidate.ptime
+			swpcstr.fl_goes = noaa_candidate.magnitude
+			swpcstr.srs_no = noaa_candidate.region
+			swpcstr.fl_type = 'swpc'
 
 			; Output position coordinates for later use with SMART
 			noaa_latlon = locstring2int(location = noaa_candidate.location)
 			if (finite(noaa_latlon(0)) ne 0.) then begin
 				hgy = noaa_latlon[0]
 				hgx = noaa_latlon[1]
-				hg2hc, hgx, hgy, hcx, hcy, date = swpcstr.peaktime 
-				swpcstr.flareloc = noaa_candidate.location
+				hg2hc, hgx, hgy, hcx, hcy, date = swpcstr.fl_peaktime 
+				swpcstr.fl_loc = noaa_candidate.location
 				swpcstr.hcx = hcx
 				swpcstr.hcy = hcy
 				swpcstr.hgx = hgx

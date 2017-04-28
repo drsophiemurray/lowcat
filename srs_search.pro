@@ -6,10 +6,10 @@ function srs_search, $
 											
 	COMMON FOLDERS 
 		
-	srsstr = {srstime:' ', $
-						no: 0., noaaloc: ' ' , $
-						mcintosh: ' ', hale: ' ' , $
-						area: 0., ll: 0., nn: 0., $
+	srsstr = {srs_time:' ', $
+						srs_no: 0., srs_loc: ' ' , $
+						srs_mcintosh: ' ', srs_hale: ' ' , $
+						srs_area: 0., srs_ll: 0., srs_nn: 0., $
 						ar: 0.}
 
 		; ---- Load NOAA SRS file ----
@@ -99,17 +99,17 @@ function srs_search, $
 		endif else begin
 			; If found a region output details to structure
 			srsstr.ar = 1.
-			srsstr.srstime = srs_time
-			srsstr.no = srs.no[noaa_ar_index]
-			srsstr.noaaloc = srs.loc[noaa_ar_index]
+			srsstr.srs_time = srs_time
+			srsstr.srs_no = srs.no[noaa_ar_index]
+			srsstr.srs_loc = srs.loc[noaa_ar_index]
 			; Check there is actually something to output for the sunspot info (sometimes its a halpha region)
 			; Changed srs.mcintosh to srs.nn to remove string/float conversion issue
 			if (finite(srs.nn[noaa_ar_index]) ne 0.) then begin
-				srsstr.mcintosh = srs.mcintosh[noaa_ar_index]
-				srsstr.hale = srs.hale[noaa_ar_index]
-				srsstr.area = srs.area[noaa_ar_index]
-				srsstr.ll = srs.ll[noaa_ar_index]
-				srsstr.nn = srs.nn[noaa_ar_index]
+				srsstr.srs_mcintosh = srs.mcintosh[noaa_ar_index]
+				srsstr.srs_hale = srs.hale[noaa_ar_index]
+				srsstr.srs_area = srs.area[noaa_ar_index]
+				srsstr.srs_ll = srs.ll[noaa_ar_index]
+				srsstr.srs_nn = srs.nn[noaa_ar_index]
 			endif
 		endelse
 

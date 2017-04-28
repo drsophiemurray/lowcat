@@ -39,7 +39,7 @@ pro helcats_list, list_loc = list_loc, swpc_search = swpc_search, hessi_search =
 	; ==== Global settings ====
 	COMMON FOLDERS, SMART_FOLDER, OUT_FOLDER, IN_FOLDER, DATA_FOLDER
 	SMART_FOLDER = '/home/somurray/Dropbox/helcats_project/smart.git/'
-	OUT_FOLDER = '/home/somurray/Dropbox/helcats_project/helcats.git/results_polar_html/' ; results is just swpc, restults_all is with hessi
+	OUT_FOLDER = '/home/somurray/lowcat/results_polar_html/'
 	IN_FOLDER = '/home/somurray/Dropbox/helcats_project/helcats.git/data/'
 	DATA_FOLDER = '/home/somurray/data/helcats/'
 
@@ -82,19 +82,19 @@ pro helcats_list, list_loc = list_loc, swpc_search = swpc_search, hessi_search =
 						cor2_pa: 0., cor2_width: 0., $
 						cor2_v: 0., cor2_vsigma: 0., cor2_vmin: 0., cor2_vmax: 0., $
 						cor2_type: ' ', cor2_halo:' '}
-	flarestr = {window_start:' ', window_end: ' ', $
-							obstype: ' ', $
-							starttime: ' ', endtime: ' ', $
-							peaktime: ' ', goes: ' ', flareloc: ' ', $
-							srstime: ' ', $
-							no: 0., noaaloc: ' ' , $
-							mcintosh: ' ', hale: ' ' , $
-							area: 0., ll: 0., nn: 0.}
-	smartstr = {time:' ', hglatlon:' ', limb:' ', $
-							totflx:0., posflx:0., negflx:0., frcflx:0d, $
-							totarea:0., posarea:0., negarea:0., $
-							bmin:0., bmax:0., bmean:0., $
-							psllength:0., rvalue:0., wlsg:0., bipolesep_mm:0.}
+	flarestr = {fl_ts:' ', fl_tf: ' ', $
+							fl_type: ' ', $
+							fl_starttime: ' ', fl_endtime: ' ', $
+							fl_peaktime: ' ', fl_goes: ' ', fl_loc: ' ', $
+							srs_time: ' ', $
+							srs_no: 0., srs_loc: ' ' , $
+							srs_mcintosh: ' ', srs_hale: ' ' , $
+							srs_area: 0., srs_ll: 0., srs_nn: 0.}
+	smartstr = {smart_time:' ', smart_hglatlon:' ', smart_limb:' ', $
+							smart_totflx:0., smart_posflx:0., smart_negflx:0., smart_frcflx:0d, $
+							smart_totarea:0., smart_posarea:0., smart_negarea:0., $
+							smart_bmin:0., smart_bmax:0., smart_bmean:0., $
+							smart_psllen:0., smart_rvalue:0., smart_wlsg:0., smart_bipolesep:0.}
 
   ; -------------------------------------------------------------------------------------------------------
 	; ==== Load the HELCATS CME list ====
@@ -132,32 +132,32 @@ pro helcats_list, list_loc = list_loc, swpc_search = swpc_search, hessi_search =
 		; Note previously used get_flare_ar_info for hessi events only
 		if keyword_set(swpc_search) and keyword_set(hessi_search) then begin
 			flare_ar_properties = get_flarear_info(cme_properties=cme_properties, $
-																							cme_exist=cme_exist, flare=flare, ar=ar, $
-																							hgx=hgx, hgy=hgy, hcx=hcx, hcy=hcy, $
-																							/swpc_search, /hessi_search)
+			                                        cme_exist=cme_exist, flare=flare, ar=ar, $
+                                              hgx=hgx, hgy=hgy, hcx=hcx, hcy=hcy, $
+                                              /swpc_search, /hessi_search)
 		endif
 		if keyword_set(swpc_search) and not keyword_set(hessi_search) then begin
 			flare_ar_properties = get_flarear_info(cme_properties=cme_properties, $
-																							cme_exist=cme_exist, flare=flare, ar=ar, $
-																							hgx=hgx, hgy=hgy, hcx=hcx, hcy=hcy, $
-																							/swpc_search)
+                                              cme_exist=cme_exist, flare=flare, ar=ar, $
+                                              hgx=hgx, hgy=hgy, hcx=hcx, hcy=hcy, $
+                                              /swpc_search)
 		endif
 		if keyword_set(hessi_search) and not keyword_set(swpc_search) then begin
 			flare_ar_properties = get_flarear_info(cme_properties=cme_properties, $
-																							cme_exist=cme_exist, flare=flare, ar=ar, $
-																							hgx=hgx, hgy=hgy, hcx=hcx, hcy=hcy, $
-																							/hessi_search)
+                                              cme_exist=cme_exist, flare=flare, ar=ar, $
+                                              hgx=hgx, hgy=hgy, hcx=hcx, hcy=hcy, $
+                                              /hessi_search)
 		endif
 		if not keyword_set(swpc_search) and not keyword_set(hessi_search) then begin
 			flare_ar_properties = get_flarear_info(cme_properties=cme_properties, $
-																							cme_exist=cme_exist, flare=flare, ar=ar, $
-																							hgx=hgx, hgy=hgy, hcx=hcx, hcy=hcy)
+                                              cme_exist=cme_exist, flare=flare, ar=ar, $
+                                              hgx=hgx, hgy=hgy, hcx=hcx, hcy=hcy)
 		endif
 		flarestr[i] = flare_ar_properties
 
 		; ---- Get SMART properties ---- 
-		smart_properties = get_smart_info(start_time=flare_ar_properties.starttime, end_time=flare_ar_properties.endtime, peak_time=flare_ar_properties.peaktime, $
-																			hgy=hgy, hgx=hgx, hcx=hcx, hcy=hcy)
+		smart_properties = get_smart_info(start_time=flare_ar_properties.fl_starttime, end_time=flare_ar_properties.fl_endtime, peak_time=flare_ar_properties.fl_peaktime, $
+                                      hgy=hgy, hgx=hgx, hcx=hcx, hcy=hcy)
 		smartstr[i] = smart_properties
 
   ; -------------------------------------------------------------------------------------------------------
@@ -190,39 +190,38 @@ pro helcats_list, list_loc = list_loc, swpc_search = swpc_search, hessi_search =
 		endif else begin
 			printf, 2, fonts_style + num2str(cme_properties.cor2_v, format = '(i8)') + '</font></td>'
 		endelse
-		if flare_ar_properties.peaktime eq ' ' then begin
+		if flare_ar_properties.fl_peaktime eq ' ' then begin
 			printf, 2, fonts_style + ' ' + '</font></td>'
 		endif else begin
-			printf, 2, fonts_style + time2file(flare_ar_properties.peaktime) + '</font></td>'
+			printf, 2, fonts_style + time2file(flare_ar_properties.fl_peaktime) + '</font></td>'
 		endelse
-		printf, 2, fonts_style + flare_ar_properties.goes + '</font></td>'
-		printf, 2, fonts_style + flare_ar_properties.flareloc + '</font></td>'
-		if flare_ar_properties.no eq 0. then begin
+		printf, 2, fonts_style + flare_ar_properties.fl_goes + '</font></td>'
+		printf, 2, fonts_style + flare_ar_properties.fl_loc + '</font></td>'
+		if flare_ar_properties.srs_no eq 0. then begin
 			printf, 2, fonts_style + ' ' + '</font></td>'
 		endif else begin
-			printf, 2, fonts_style + num2str(flare_ar_properties.no,format='(i8)') + '</font></td>'
+			printf, 2, fonts_style + num2str(flare_ar_properties.srs_no,format='(i8)') + '</font></td>'
 		endelse
-		printf, 2, fonts_style + flare_ar_properties.mcintosh + '</font></td>'
-; 		printf, 2, fonts_style + flare_ar_properties.hale + '</font></td>'
-		if smart_properties.totarea eq 0. then begin
+		printf, 2, fonts_style + flare_ar_properties.srs_mcintosh + '</font></td>'
+		if smart_properties.smart_totarea eq 0. then begin
 			printf, 2, fonts_style + ' ' + '</font></td>'
 		endif else begin
-			printf, 2, fonts_style + num2str(smart_properties.totarea,format='(f8.2)') + '</font></td>'
+			printf, 2, fonts_style + num2str(smart_properties.smart_totarea,format='(f8.2)') + '</font></td>'
 		endelse
-		if smart_properties.totflx eq 0. then begin
+		if smart_properties.smart_totflx eq 0. then begin
 			printf, 2, fonts_style + ' ' + '</font></td>'
 		endif else begin
-			printf, 2, fonts_style + num2str(smart_properties.totflx,format='(e8.2)') + '</font></td>'
+			printf, 2, fonts_style + num2str(smart_properties.smart_totflx,format='(e8.2)') + '</font></td>'
 		endelse
-		if smart_properties.rvalue eq 0. then begin
+		if smart_properties.smart_rvalue eq 0. then begin
 			printf, 2, fonts_style + ' ' + '</font></td>'
 		endif else begin
-			printf, 2, fonts_style + num2str(smart_properties.rvalue,format='(e8.2)') + '</font></td>'
+			printf, 2, fonts_style + num2str(smart_properties.smart_rvalue,format='(e8.2)') + '</font></td>'
 		endelse
-		if smart_properties.wlsg eq 0. then begin
+		if smart_properties.smart_wlsg eq 0. then begin
 			printf, 2, fonts_style + ' ' + '</font></td>'
 		endif else begin
-			printf, 2, fonts_style + num2str(smart_properties.wlsg,format='(e8.2)') + '</font></td>'
+			printf, 2, fonts_style + num2str(smart_properties.smart_wlsg,format='(e8.2)') + '</font></td>'
 		endelse
 		printf, 2, '</tr>'
 	
@@ -245,19 +244,19 @@ pro helcats_list, list_loc = list_loc, swpc_search = swpc_search, hessi_search =
 						cor2_pa: 0., cor2_width: 0., $
 						cor2_v: 0., cor2_vsigma: 0., cor2_vmin: 0., cor2_vmax: 0., $
 						cor2_type: ' ', cor2_halo:' ', $
-						window_start:' ', window_end: ' ', $
-						obstype: ' ', $
-						starttime: ' ', endtime: ' ', $
-						peaktime: ' ', goes: ' ', flareloc: ' ', $
-						srstime: ' ', $
-						no: 0., noaaloc: ' ' , $
-						mcintosh: ' ', hale: ' ' , $
-						area: 0., ll: 0., nn: 0., $
-						time:' ', hglatlon:' ', limb:' ', $
-						totflx:0., posflx:0., negflx:0., frcflx:0d, $
-						totarea:0., posarea:0., negarea:0., $
-						bmin:0., bmax:0., bmean:0., $
-						psllength:0., rvalue:0., wlsg:0., bipolesep_mm:0.}
+						fl_ts:' ', fl_tf: ' ', $
+						fl_type: ' ', $
+						fl_starttime: ' ', fl_endtime: ' ', $
+						fl_peaktime: ' ', fl_goes: ' ', fl_loc: ' ', $
+						srs_time: ' ', $
+						srs_no: 0., srs_loc: ' ' , $
+						srs_mcintosh: ' ', srs_hale: ' ' , $
+						srs_area: 0., srs_ll: 0., srs_nn: 0., $
+						smart_time:' ', smart_hglatlon:' ', smart_limb:' ', $
+						smart_totflx:0., smart_posflx:0., smart_negflx:0., smart_frcflx:0d, $
+						smart_totarea:0., smart_posarea:0., smart_negarea:0., $
+						smart_bmin:0., smart_bmax:0., smart_bmean:0., $
+						smart_psllen:0., smart_rvalue:0., smart_wlsg:0., smart_bipolesep:0.}
 	outstr = replicate(outstr, list_size)
 
 	for i = 0, (list_size - 1) do begin
