@@ -23,7 +23,7 @@ function get_smart_info, start_time=start_time, end_time=end_time, peak_time=pea
 	COMMON FOLDERS
 
 	; Set up structure of properties that are wanted
-	arstr = {smart_time:' ', smart_hglatlon:' ', lsmart_imb:' ', $
+	arstr = {smart_time:' ', smart_hglatlon:' ', smart_limb:' ', $
 						smart_totflx:0., smart_posflx:0., smart_negflx:0., smart_frcflx:0d, $
 						smart_totarea:0., smart_posarea:0., smart_negarea:0., $
 						smart_bmin:0., smart_bmax:0., smart_bmean:0., $
