@@ -26,7 +26,7 @@ srs_time:           Issue time of SWPC Solar Region Summary corresponding to fla
 srs_no:             SWPC-determined active region number of candidate region
 srs_loc:            SWPC-determined heliographic latitude and longitude of region
 srs_mcintosh:       SWPC-determined Zurich classification of the group (McIntosh 1990) 
-srs_hale:           SWPC-determined Zurich classification of the group (McIntosh 1990)
+srs_hale:           SWPC-determined Hale classification of the group (Kunzel 1965)
 srs_area:           SWPC-determined active region total corrected area [Millionths of a solar hemisphere]
 srs_ll:             SWPC-determined longitudinal extent [Heliographic degrees]
 srs_nn:             SWPC-determined total number of visible sunspots in the group
