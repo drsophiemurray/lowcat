@@ -41,7 +41,7 @@ def main():
 
     #visualise!
     #try_bokeh(outstr)
-    #qglue(data1=outstr)
+    #qglue(data1=data)
     try_plotly(xdata = data['SMART_RVALUE'], ydata = data['COR2_V'],
                weightdata = '16', colourdata = data['COR2_WIDTH'],
                filedata = 'trying_colour_weight_plot')
