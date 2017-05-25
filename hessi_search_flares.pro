@@ -26,7 +26,7 @@ function hessi_search_flares, $
 	; will use hessi_list.flags[17] which is position quality, as well as hessi_list.flags[16] which is data quality (max is 7)
 	
 	; Define y position above which dont want events
-	polar = 750.
+	polar = 625. ;750
 
 	; Get the closest flare to the search time window and CME position
 	; Note that 'sflag = 1' means a solar event - could say 'ne 0' which would include the maybes (2)

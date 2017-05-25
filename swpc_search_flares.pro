@@ -8,7 +8,7 @@ function swpc_search_flares, $
 					hcx_range=hcx_range, hcy_range=hcy_range
 
 	; Define y position above which dont want events
-	polar = 50.
+	polar = 40.
 	
 	; Set up output structure
 	swpcstr = {fl_type:' ', $

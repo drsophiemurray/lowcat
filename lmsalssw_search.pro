@@ -5,7 +5,7 @@ function lmsalssw_search, $
 					hcx_range = hcx_range, hcy_range = hcy_range
 
 	; Choose y position above which no events
-	polar = 750.
+	polar = 625. ;750.
 	
 	; Set up output structure
 	sswstr = {fl_type:' ', $
