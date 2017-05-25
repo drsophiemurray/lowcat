@@ -39,7 +39,7 @@ pro helcats_list, list_loc = list_loc, swpc_search = swpc_search, hessi_search =
 	; ==== Global settings ====
 	COMMON FOLDERS, SMART_FOLDER, OUT_FOLDER, IN_FOLDER, DATA_FOLDER
 	SMART_FOLDER = '/home/somurray/Dropbox/helcats_project/smart.git/'
-	OUT_FOLDER = '/home/somurray/lowcat/results_polar_html/'
+	OUT_FOLDER = '/home/somurray/lowcat/results/'
 	IN_FOLDER = '/home/somurray/Dropbox/helcats_project/helcats.git/data/'
 	DATA_FOLDER = '/home/somurray/data/helcats/'
 
@@ -50,7 +50,7 @@ pro helcats_list, list_loc = list_loc, swpc_search = swpc_search, hessi_search =
   ; -------------------------------------------------------------------------------------------------------
 	; ---- Output data ----
 	; .txt format
-	openw, 1, OUT_FOLDER + 'helcats_table.txt'
+	openw, 1, OUT_FOLDER + 'lowcat.txt'
 	header = ['No.', 'ID', $
 						'SC', 'HI time', 'HI PA N', 'HI PA S', $
 						'COR2 window start', 'COR2 window end', 'COR2 candidate time', $
@@ -72,7 +72,7 @@ pro helcats_list, list_loc = list_loc, swpc_search = swpc_search, hessi_search =
 						'PSL length', 'R value', 'WLSG', 'Bip_sep']	    	    
 	printf, 1, header, format = '((A8, 3X, A20, 3X, A8, 3X, A20, 3X, A8, 3X, A8, 3X, A20, 3X, A20, 3X, A20, 3X, A8, 3X, A8, 3X, A8, 3X, A8, 3X, A8, 3X, A8, 3X, A8, 3X, A8, 3X,   A20, 3X, A20, 3X, A8, 3X, A20, 3X, A20, 3X, A20, 3X, A8, 3X, A8, 3X,   A20, 3X, A8, 3X, A8, 3X, A8, 3X, A20, 3X, A8, 3X, A8, 3X, A8, 3X,   A20, 3X, A8, 3X, A8, 3X, A8, 3X, A8, 3X, A8, 3X, A8, 3X, A8, 3X, A8, 3X, A8, 3X, A8, 3X, A8, 3X, A8, 3X, A8, 3X, A8, 3X, A8, 3X, A8))'
 
-	openw, 2, OUT_FOLDER + 'latest_list.html'
+	openw, 2, OUT_FOLDER + 'lowcat.html'
 	fonts_style = '<td bgcolor="white" align="center"> <font size="-1" face="Sans-Serif, Helvetica, Arial" color="black">'
 	
 	; ---- Structures ----
@@ -100,10 +100,10 @@ pro helcats_list, list_loc = list_loc, swpc_search = swpc_search, hessi_search =
 	; ==== Load the HELCATS CME list ====
 
 	; Download file from webpage if not defined when calling code
-	if (n_elements(list_loc) eq 0) then begin
-		spawn, 'wget https://www.helcats-fp7.eu/catalogues/data/HCME_WP2_V03.json -O ' + IN_FOLDER + 'HCME_WP2_V03.json'
-	endif
-	cme_list = json_parse(IN_FOLDER + 'HCME_WP2_V03.json', /toarray, /tostruct)
+;	if (n_elements(list_loc) eq 0) then begin
+;		spawn, 'wget https://www.helcats-fp7.eu/catalogues/data/HCME_WP2_V03.json -O ' + IN_FOLDER + 'HCME_WP2_V03.json'
+;	endif
+	cme_list = json_parse(IN_FOLDER + 'HCME_WP2_V04.json', /toarray, /tostruct)
 
 	; List size (ignore first line as header)
 	list_size = n_elements(cme_list.data[0, *])
@@ -113,9 +113,9 @@ pro helcats_list, list_loc = list_loc, swpc_search = swpc_search, hessi_search =
 	smartstr = replicate(smartstr, list_size)
 
 	; Download the latest COR2 CME CACTUS database
- 	cactus = webget("http://secchi.nrl.navy.mil/cactus/secchi_cmecat_combo.sav", $
- 									copyfile=IN_FOLDER+'secchi_cmecat_combo.sav')
-;	restore, IN_FOLDER + 'secchi_cmecat_combo.sav', /verb ; Loads SECCHIA_COMBO and SECCHIB_COMBO
+; 	cactus = webget("http://secchi.nrl.navy.mil/cactus/secchi_cmecat_combo.sav", $
+; 									copyfile=IN_FOLDER+'secchi_cmecat_combo.sav')
+	restore, IN_FOLDER + 'secchi_cmecat_combo.sav', /verb ; Loads SECCHIA_COMBO and SECCHIB_COMBO
 
   ; -------------------------------------------------------------------------------------------------------
 	; ==== Get properties ====
@@ -230,8 +230,6 @@ pro helcats_list, list_loc = list_loc, swpc_search = swpc_search, hessi_search =
 	close, 1
 	close, 2
 
-	; ==== Create IDL .sav file ====
-	save, cme_list, cmestr, flarestr, smartstr, file = OUT_FOLDER + 'latest_list.sav'
 
 	; ==== Create json file ====
 
@@ -268,10 +266,12 @@ pro helcats_list, list_loc = list_loc, swpc_search = swpc_search, hessi_search =
 	outjson = json_serialize(outstr)
 
 	; Save output
-	openw, lun, OUT_FOLDER + 'latest_list.json', /get_lun
+	openw, lun, OUT_FOLDER + 'lowcat.json', /get_lun
 	printf, lun, outjson
 	close, lun
 
+	; ==== Create IDL .sav file ====
+	save, cme_list, outstr, file = OUT_FOLDER + 'lowcat.sav'
 	
 	; -------------------------------------------------------------------------------------------------------
 	; ==== End of code ====
