@@ -25,6 +25,7 @@ import pandas as pd
 # from glue import qglue
 import plotly.graph_objs as go
 import plotly.plotly as py
+from plotly import tools
 
 
 def main():
@@ -42,13 +43,37 @@ def main():
     #visualise!
     #try_bokeh(outstr)
     #qglue(data1=data)
-    try_plotly(xdata = data['SMART_RVALUE'], ydata = data['COR2_V'],
-               weightdata = '16', colourdata = data['COR2_WIDTH'],
-               filedata = 'trying_colour_weight_plot')
+    # plotly_single(xdata = data['SMART_RVALUE'], ydata = data['COR2_V'],
+    #                weightdata = '16', colourdata = data['COR2_WIDTH'],
+    #                filedata = 'rvaluevwidth'
+    #                )
 
-    plot_hist()
+    #flgoes, flduration
+
+    plotly_multi(x1data = data['FL_GOES'], x2data = data['SRS_NN'],
+                 x3data=data['SRS_AREA'], x4data = data['SRS_LL'],
+                 y1data = data['COR2_V'],
+                 weightdata = '16',
+                 colourdata = data['COR2_WIDTH'],
+                 filedata = 'flare_srs_v_width_test')
+
+
+    plotly_multi(x1data = data['SMART_TOTAREA'], x2data = data['SMART_TOTFLX'],
+                 x3data=data['SMART_BMIN'], x4data = data['SMART_BMAX'],
+                 y1data = data['COR2_V'],
+                 weightdata = '16',
+                 colourdata = data['COR2_WIDTH'],
+                 filedata = 'smart_simple_v_width_test')
+
+    plotly_multi(x1data = data['SMART_BIPOLESEP'], x2data = data['SMART_PSLLEN'],
+                 x3data=data['SMART_RVALUE'], x4data = data['SMART_WLSG'],
+                 y1data = data['COR2_V'],
+                 weightdata = '16',
+                 colourdata = data['COR2_WIDTH'],
+                 filedata = 'smart_complex_v_width_test')
+
     #output a csv
-    data.to_csv('lowcat.csv')
+    # data.to_csv('lowcat.csv')
 
 def fix_data(outstr):
     """Some data in the catalogue are in unfortunate format
@@ -120,7 +145,8 @@ def try_bokeh(data):
     hale_colormap = {' ': 'black', '': 'black', '          NaN': 'black',
                     'Alpha': 'green', 'Beta':'turquoise',
                     'Gamma':'blue', 'Delta': 'navy',
-                    'Beta-Gamma': 'purple', 'Beta-Gamma-Delta': 'magenta', 'Beta-Delta': 'pink'}
+                    'Beta-Gamma': 'purple', 'Beta-Gamma-Delta': 'magenta', 'Beta-Delta': 'pink'
+                     }
     hale_colors = [hale_colormap[x] for x in data['SRS_HALE']]
     hale_colors = pd.Series(hale_colors)
     data['hale_colors'] = hale_colors.values
@@ -136,7 +162,7 @@ def try_bokeh(data):
 
     show(scatter)
 
-def try_plotly(xdata, ydata, weightdata, colourdata, filedata):
+def plotly_single(xdata, ydata, weightdata, colourdata, filedata):
     trace1 = go.Scatter(
         x=xdata,
         y=ydata,
@@ -149,7 +175,7 @@ def try_plotly(xdata, ydata, weightdata, colourdata, filedata):
         )
     )
     data = [trace1]
-    layoutinfo = go.Layout(
+    layout = go.Layout(
         xaxis=dict(
             type='log',
         ),
@@ -160,25 +186,62 @@ def try_plotly(xdata, ydata, weightdata, colourdata, filedata):
     py.iplot(data=data, layout=layout, filename=filedata)
 
 
-# def fix_data(data):
-#     """Some data in the catalogue are in unfortunate format
-#     Here I'm converting them to something useful for plotting purposes"""
-#     # Make halo events an integer
-#     data.is_copy = False
-#     data["COR2_HALO"].loc[data["COR2_HALO"] == 'II'] = 2.
-#     data["COR2_HALO"].loc[data["COR2_HALO"] == 'III'] = 3.
-#     data["COR2_HALO"].loc[data["COR2_HALO"] == 'IV'] = 4.
-#     # Convert GOES strings to magnitudes
-#     for i in range(len(data["FL_GOES"])):
-#         print i
-#         data["FL_GOES"][i] = goes_string2mag(data["FL_GOES"][i])
-#     # Convert everything else to NaNs
-#     for i in data.columns.tolist():
-#         print i
-#         for j in range(len(data[i])):
-#             if data[i][j] == 0:
-#                 data[i][j] = float('NaN')
-#     return data
+def plotly_multi(x1data, x2data, x3data, x4data,
+                 y1data,
+                 weightdata,
+                 colourdata,
+                 filedata):
+    trace1 = go.Scatter(x=x1data,
+                        y=y1data,
+                        mode='markers',
+                        marker=dict(
+                            size=weightdata,
+                            color=colourdata,
+                            colorscale='Viridis',
+                            showscale=False)
+                        )
+    trace2 = go.Scatter(x=x2data,
+                        y=y1data,
+                        mode='markers',
+                        marker=dict(
+                            size=weightdata,
+                            color=colourdata,
+                            colorscale='Viridis',
+                            showscale=True)
+                        )
+    trace3 = go.Scatter(x=x3data,
+                        y=y1data,
+                        mode='markers',
+                        marker=dict(
+                            size=weightdata,
+                            color=colourdata,
+                            colorscale='Viridis',
+                            showscale=True)
+                        )
+    trace4 = go.Scatter(x=x4data,
+                        y=y1data,
+                        mode='markers',
+                        marker=dict(
+                            size=weightdata,
+                            color=colourdata,
+                            colorscale='Viridis',
+                            showscale=True)
+                        )
+    fig = tools.make_subplots(rows=2, cols=2)
+    fig.append_trace(trace1, 1, 1)
+    fig.append_trace(trace2, 1, 2)
+    fig.append_trace(trace3, 2, 1)
+    fig.append_trace(trace4, 2, 2)
+    fig['layout']['xaxis1'].update(type='linear')
+    fig['layout']['xaxis2'].update(type='linear')
+    fig['layout']['xaxis3'].update(type='linear')
+    fig['layout']['xaxis4'].update(type='linear')
+    fig['layout']['yaxis1'].update(type='linear')
+    fig['layout']['yaxis2'].update(type='linear')
+    fig['layout']['yaxis3'].update(type='linear')
+    fig['layout']['yaxis4'].update(type='linear')
+    py.iplot(fig, filename=filedata)
+
 
 if __name__ == '__main__':
     main()
