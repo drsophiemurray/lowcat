@@ -1,5 +1,5 @@
 function srs_search, $ 
-					starttime = starttime, endttime = endtime, peakttime = peaktime, no = no, $
+					starttime = starttime, endtime = endtime, peaktime = peaktime, no = no, $
 					srs_template = srs_template, $
 					hgx = hgx, hgy = hgy, hcx = hcx, hcy = hcy, $
 					lat_range, lon_range
@@ -104,7 +104,7 @@ function srs_search, $
 			srsstr.srs_loc = srs.loc[noaa_ar_index]
 			; Check there is actually something to output for the sunspot info (sometimes its a halpha region)
 			; Changed srs.mcintosh to srs.nn to remove string/float conversion issue
-			if (finite(srs.nn[noaa_ar_index]) ne 0.) then begin
+			if ((finite(srs.nn[noaa_ar_index]) ne 0.) and (srs.nn[noaa_ar_index] ge 0.)) then begin
 				srsstr.srs_mcintosh = srs.mcintosh[noaa_ar_index]
 				srsstr.srs_hale = srs.hale[noaa_ar_index]
 				srsstr.srs_area = srs.area[noaa_ar_index]

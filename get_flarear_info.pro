@@ -63,7 +63,6 @@ function get_flarear_info, $
 		0: cme_time = cme_properties.cor2_ts
 		1: cme_time = cme_properties.cor2_time
 	endcase
-; 	cme_time = cme_properties.cor2_ts
   
 	; Define search window to match flare event to CME
 	flare_ts = anytim(cme_time) - ((cor2_r - flare_r) / cme_min) 
@@ -101,7 +100,6 @@ function get_flarear_info, $
 													hcx_range = hcx_range, hcy_range = hcy_range)
 	
 	; Output this info
-; 	if typename(sswstr) ne 'STRING' then begin
 	if sswstr.fl_starttime ne ' ' then begin
 		outstr.fl_type = sswstr.fl_type
 		outstr.fl_starttime = sswstr.fl_starttime
@@ -134,7 +132,7 @@ function get_flarear_info, $
 																	hcx_range = hcx_range, hcy_range = hcy_range)
  
 			; Output this info
-			if typename(swpcstr) ne 'STRING' then begin
+			if swpcstr.fl_starttime ne ' ' then begin
 				outstr.fl_type = swpcstr.fl_type
 				outstr.fl_starttime = swpcstr.fl_starttime
 				outstr.fl_endtime = swpcstr.fl_endtime
@@ -171,7 +169,7 @@ function get_flarear_info, $
 																	hcx_range = hcx_range, hcy_range = hcy_range)
 		
 		; Output this info
-		if typename(hessistr) ne 'STRING' then begin
+  if hessistr.fl_starttime ne ' ' then begin
 			outstr.fl_type = hessistr.fl_type
 			outstr.fl_starttime = hessistr.fl_starttime
 			outstr.fl_endtime = hessistr.fl_endtime
@@ -205,7 +203,7 @@ function get_flarear_info, $
 
 	; == If a flare has been identified ==
 	if (flare eq 1.) then begin
-		srsstr = srs_search(starttime = outstr.fl_starttime, endttime = outstr.fl_endtime, peakttime = outstr.fl_peaktime, no = outstr.srs_no, $
+		srsstr = srs_search(starttime = outstr.fl_starttime, endtime = outstr.fl_endtime, peaktime = outstr.fl_peaktime, no = outstr.srs_no, $
 												srs_template = srs_template, $
 												hgx = hgx, hgy = hgy, hcx = hcx, hcy = hcy, $
 												lat_range, lon_range)
