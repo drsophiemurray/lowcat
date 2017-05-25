@@ -32,15 +32,14 @@ def main():
     """Loads the LOWCAT catalogue, 
     fixes some data formats,
     then loads the glue GUI to play around with the plots"""
-    #load data
+    # Load the .sav file
     savfile = readsav(CAT_FOLDER+SAV_FILE)
-    #data = pd.read_json(CAT_FOLDER + JSON_FILE)
 
-    #fix some of the data into a format that is more suitable
+    # Fix some of the data into a format that is more suitable
     outstr = fix_data(savfile['outstr'])
     data = pd.DataFrame(outstr)
 
-    #visualise!
+    # Now mess around with visualisation
     #try_bokeh(outstr)
     #qglue(data1=data)
     # plotly_single(xdata = data['SMART_RVALUE'], ydata = data['COR2_V'],
@@ -48,32 +47,46 @@ def main():
     #                filedata = 'rvaluevwidth'
     #                )
 
-    #flgoes, flduration
+    # Calculate flare duration
+    data['FL_DURATION'] = data['FL_ENDTIME'] - data['FL_STARTTIME']
+    for i in range(len(data['FL_DURATION'])):
+        try:
+            data['FL_DURATION'][i] = (data['FL_DURATION'][i]).total_seconds()/60.
+        except AttributeError:
+            continue
 
-    plotly_multi(x1data = data['FL_GOES'], x2data = data['SRS_NN'],
-                 x3data=data['SRS_AREA'], x4data = data['SRS_LL'],
+    # Create multiplots subplots in plot.ly
+    plotly_multi(x1data = data['FL_GOES'], x1title = 'GOES FLux',
+                 x2data = data['FL_DURATION'],  x2title = 'Flare duration',
+                 x3data=data['SRS_AREA'], x3title = 'SRS area',
+                 x4data = data['SRS_NN'], x4title = 'SRS no. spots',
                  y1data = data['COR2_V'],
-                 weightdata = '16',
+                 weightdata = '10',
                  colourdata = data['COR2_WIDTH'],
                  filedata = 'flare_srs_v_width')
 
 
-    plotly_multi(x1data = data['SMART_TOTAREA'], x2data = data['SMART_TOTFLX'],
-                 x3data=data['SMART_BMIN'], x4data = data['SMART_BMAX'],
+    plotly_multi(x1data = data['SMART_TOTAREA'], x1title = 'Total area [m.s.h.]',
+                 x2data = data['SMART_TOTFLX'], x2title = 'Total flux [Mx]',
+                 x3data=data['SMART_BMIN'], x3title = 'Bmin [G]',
+                 x4data = data['SMART_BMAX'], x4title = 'Bmax [G]',
                  y1data = data['COR2_V'],
-                 weightdata = '16',
+                 weightdata = '10',
                  colourdata = data['COR2_WIDTH'],
                  filedata = 'smart_simple_v_width')
 
-    plotly_multi(x1data = data['SMART_BIPOLESEP'], x2data = data['SMART_PSLLEN'],
-                 x3data=data['SMART_RVALUE'], x4data = data['SMART_WLSG'],
+    plotly_multi(x1data = data['SMART_BIPOLESEP'], x1title = 'Bipole separation [Mm]',
+                 x2data = data['SMART_PSLLEN'], x2title = 'PIL length [Mm]',
+                 x3data=data['SMART_RVALUE'], x3title = 'log10 R value [Mx]',
+                 x4data = data['SMART_WLSG'], x4title = 'log10 WLsg [G/Mm]',
                  y1data = data['COR2_V'],
-                 weightdata = '16',
+                 weightdata = '10',
                  colourdata = data['COR2_WIDTH'],
                  filedata = 'smart_complex_v_width')
 
-    #output a csv
-    data.to_csv('lowcat.csv')
+    # Output a .csv file with fixed data
+    # data.to_csv('lowcat.csv')
+
 
 def fix_data(outstr):
     """Some data in the catalogue are in unfortunate format
@@ -127,6 +140,7 @@ def goes_string2mag(goes):
             out = mag * 1.0e-4
     return out
 
+
 def get_dates(data):
     """Get datetime structures for anything that has a time,
     otherwise just add NaNs"""
@@ -162,6 +176,7 @@ def try_bokeh(data):
 
     show(scatter)
 
+
 def plotly_single(xdata, ydata, weightdata, colourdata, filedata):
     trace1 = go.Scatter(
         x=xdata,
@@ -186,11 +201,27 @@ def plotly_single(xdata, ydata, weightdata, colourdata, filedata):
     py.iplot(data=data, layout=layout, filename=filedata)
 
 
-def plotly_multi(x1data, x2data, x3data, x4data,
+def plotly_trace(xdata, ydata,
+                 weightdata, colourdata):
+    return go.Scatter(x=x1data,
+                      y=y1data,
+                      mode='markers',
+                      marker=dict(size=weightdata,
+                                  color=colourdata,
+                                  colorscale='Viridis',
+                                  showscale=False)
+                      )
+
+def plotly_multi(x1data, x1title,
+                 x2data, x2title,
+                 x3data, x3title,
+                 x4data, x4title,
                  y1data,
                  weightdata,
                  colourdata,
                  filedata):
+    trace1 = plotly_trace(x1data, y1data,
+                          weightdata, colourdata)
     trace1 = go.Scatter(x=x1data,
                         y=y1data,
                         mode='markers',
@@ -207,7 +238,7 @@ def plotly_multi(x1data, x2data, x3data, x4data,
                             size=weightdata,
                             color=colourdata,
                             colorscale='Viridis',
-                            showscale=True)
+                            showscale=False)
                         )
     trace3 = go.Scatter(x=x3data,
                         y=y1data,
@@ -216,7 +247,7 @@ def plotly_multi(x1data, x2data, x3data, x4data,
                             size=weightdata,
                             color=colourdata,
                             colorscale='Viridis',
-                            showscale=True)
+                            showscale=False)
                         )
     trace4 = go.Scatter(x=x4data,
                         y=y1data,
@@ -232,10 +263,10 @@ def plotly_multi(x1data, x2data, x3data, x4data,
     fig.append_trace(trace2, 1, 2)
     fig.append_trace(trace3, 2, 1)
     fig.append_trace(trace4, 2, 2)
-    fig['layout']['xaxis1'].update(type='linear')
-    fig['layout']['xaxis2'].update(type='linear')
-    fig['layout']['xaxis3'].update(type='linear')
-    fig['layout']['xaxis4'].update(type='linear')
+    fig['layout']['xaxis1'].update(type='linear', title=x1title)
+    fig['layout']['xaxis2'].update(type='linear', title=x2title)
+    fig['layout']['xaxis3'].update(type='linear', title=x3title)
+    fig['layout']['xaxis4'].update(type='linear', title=x4title)
     fig['layout']['yaxis1'].update(type='linear')
     fig['layout']['yaxis2'].update(type='linear')
     fig['layout']['yaxis3'].update(type='linear')
