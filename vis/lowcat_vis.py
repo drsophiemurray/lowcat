@@ -55,7 +55,7 @@ def main():
                  y1data = data['COR2_V'],
                  weightdata = '16',
                  colourdata = data['COR2_WIDTH'],
-                 filedata = 'flare_srs_v_width_test')
+                 filedata = 'flare_srs_v_width')
 
 
     plotly_multi(x1data = data['SMART_TOTAREA'], x2data = data['SMART_TOTFLX'],
@@ -63,17 +63,17 @@ def main():
                  y1data = data['COR2_V'],
                  weightdata = '16',
                  colourdata = data['COR2_WIDTH'],
-                 filedata = 'smart_simple_v_width_test')
+                 filedata = 'smart_simple_v_width')
 
     plotly_multi(x1data = data['SMART_BIPOLESEP'], x2data = data['SMART_PSLLEN'],
                  x3data=data['SMART_RVALUE'], x4data = data['SMART_WLSG'],
                  y1data = data['COR2_V'],
                  weightdata = '16',
                  colourdata = data['COR2_WIDTH'],
-                 filedata = 'smart_complex_v_width_test')
+                 filedata = 'smart_complex_v_width')
 
     #output a csv
-    # data.to_csv('lowcat.csv')
+    data.to_csv('lowcat.csv')
 
 def fix_data(outstr):
     """Some data in the catalogue are in unfortunate format
