@@ -48,41 +48,22 @@ def main():
     #                )
 
     # Calculate flare duration
-    data['FL_DURATION'] = data['FL_ENDTIME'] - data['FL_STARTTIME']
-    for i in range(len(data['FL_DURATION'])):
-        try:
-            data['FL_DURATION'][i] = (data['FL_DURATION'][i]).total_seconds()/60.
-        except AttributeError:
-            continue
+    data['FL_DURATION'] = calculate_flare_duration(data['FL_STARTTIME'], data['FL_ENDTIME'])
 
     # Create multiplots subplots in plot.ly
     plotly_multi(x1data = data['FL_GOES'], x1title = 'GOES FLux',
                  x2data = data['FL_DURATION'],  x2title = 'Flare duration',
-                 x3data=data['SRS_AREA'], x3title = 'SRS area',
-                 x4data = data['SRS_NN'], x4title = 'SRS no. spots',
+                 x3data = data['SRS_NN'], x3title = 'SRS no. spots',
+                 x4data = data['SMART_TOTAREA'], x4title = 'Total area [m.s.h.]',
+                 x5data = data['SMART_TOTFLX'], x5title = 'Total flux [Mx]',
+                 x6data = data['SMART_BMEAN'], x6title = 'Bmean [G]',
+                 x7data = data['SMART_BIPOLESEP'], x7title = 'Bipole separation [Mm]',
+                 x8data=data['SMART_RVALUE'], x8title = 'log10 R value [Mx]',
+                 x9data = data['SMART_WLSG'], x9title = 'log10 WLsg [G/Mm]',
                  y1data = data['COR2_V'],
                  weightdata = '10',
                  colourdata = data['COR2_WIDTH'],
-                 filedata = 'flare_srs_v_width')
-
-
-    plotly_multi(x1data = data['SMART_TOTAREA'], x1title = 'Total area [m.s.h.]',
-                 x2data = data['SMART_TOTFLX'], x2title = 'Total flux [Mx]',
-                 x3data=data['SMART_BMIN'], x3title = 'Bmin [G]',
-                 x4data = data['SMART_BMAX'], x4title = 'Bmax [G]',
-                 y1data = data['COR2_V'],
-                 weightdata = '10',
-                 colourdata = data['COR2_WIDTH'],
-                 filedata = 'smart_simple_v_width')
-
-    plotly_multi(x1data = data['SMART_BIPOLESEP'], x1title = 'Bipole separation [Mm]',
-                 x2data = data['SMART_PSLLEN'], x2title = 'PIL length [Mm]',
-                 x3data=data['SMART_RVALUE'], x3title = 'log10 R value [Mx]',
-                 x4data = data['SMART_WLSG'], x4title = 'log10 WLsg [G/Mm]',
-                 y1data = data['COR2_V'],
-                 weightdata = '10',
-                 colourdata = data['COR2_WIDTH'],
-                 filedata = 'smart_complex_v_width')
+                 filedata = 'all_v_width')
 
     # Output a .csv file with fixed data
     # data.to_csv('lowcat.csv')
@@ -152,6 +133,18 @@ def get_dates(data):
     return data
 
 
+def calculate_flare_duration(data_start, data_end):
+    """Get flare duration in minutes
+    """
+    data_out = data_end - data_start
+    for i in range(len(data_out)):
+        try:
+            data_out[i] = (data_out[i]).total_seconds()/60.
+        except AttributeError:
+            continue
+    return data_out
+
+
 def try_bokeh(data):
     """trying the crossfilter eventually but simpler first"""
     data = pd.DataFrame(data)
@@ -201,77 +194,120 @@ def plotly_single(xdata, ydata, weightdata, colourdata, filedata):
     py.iplot(data=data, layout=layout, filename=filedata)
 
 
-def plotly_trace(xdata, ydata,
-                 weightdata, colourdata):
-    return go.Scatter(x=x1data,
-                      y=y1data,
-                      mode='markers',
-                      marker=dict(size=weightdata,
-                                  color=colourdata,
-                                  colorscale='Viridis',
-                                  showscale=False)
-                      )
-
 def plotly_multi(x1data, x1title,
                  x2data, x2title,
                  x3data, x3title,
                  x4data, x4title,
+                 x5data, x5title,
+                 x6data, x6title,
+                 x7data, x7title,
+                 x8data, x8title,
+                 x9data, x9title,
                  y1data,
                  weightdata,
                  colourdata,
                  filedata):
-    trace1 = plotly_trace(x1data, y1data,
-                          weightdata, colourdata)
-    trace1 = go.Scatter(x=x1data,
-                        y=y1data,
-                        mode='markers',
-                        marker=dict(
-                            size=weightdata,
-                            color=colourdata,
-                            colorscale='Viridis',
-                            showscale=False)
-                        )
-    trace2 = go.Scatter(x=x2data,
-                        y=y1data,
-                        mode='markers',
-                        marker=dict(
-                            size=weightdata,
-                            color=colourdata,
-                            colorscale='Viridis',
-                            showscale=False)
-                        )
-    trace3 = go.Scatter(x=x3data,
-                        y=y1data,
-                        mode='markers',
-                        marker=dict(
-                            size=weightdata,
-                            color=colourdata,
-                            colorscale='Viridis',
-                            showscale=False)
-                        )
-    trace4 = go.Scatter(x=x4data,
-                        y=y1data,
-                        mode='markers',
-                        marker=dict(
-                            size=weightdata,
-                            color=colourdata,
-                            colorscale='Viridis',
-                            showscale=True)
-                        )
-    fig = tools.make_subplots(rows=2, cols=2)
+    """Make multi subplots in plotly
+    """
+    trace1 = get_plotly_trace(x1data, y1data,
+                              weightdata, colourdata)
+    trace2 = get_plotly_trace(x2data, y1data,
+                              weightdata, colourdata)
+    trace3 = get_plotly_trace(x3data, y1data,
+                              weightdata, colourdata)
+    trace4 = get_plotly_trace(x4data, y1data,
+                              weightdata, colourdata)
+    trace5 = get_plotly_trace(x5data, y1data,
+                              weightdata, colourdata)
+    trace6 = get_plotly_trace(x6data, y1data,
+                              weightdata, colourdata)
+    trace7 = get_plotly_trace(x7data, y1data,
+                              weightdata, colourdata)
+    trace8 = get_plotly_trace(x8data, y1data,
+                              weightdata, colourdata)
+    trace9 = get_plotly_trace(x9data, y1data,
+                              weightdata, colourdata)
+    fig = tools.make_subplots(rows=3, cols=3)
     fig.append_trace(trace1, 1, 1)
     fig.append_trace(trace2, 1, 2)
-    fig.append_trace(trace3, 2, 1)
-    fig.append_trace(trace4, 2, 2)
-    fig['layout']['xaxis1'].update(type='linear', title=x1title)
-    fig['layout']['xaxis2'].update(type='linear', title=x2title)
-    fig['layout']['xaxis3'].update(type='linear', title=x3title)
-    fig['layout']['xaxis4'].update(type='linear', title=x4title)
-    fig['layout']['yaxis1'].update(type='linear')
-    fig['layout']['yaxis2'].update(type='linear')
-    fig['layout']['yaxis3'].update(type='linear')
-    fig['layout']['yaxis4'].update(type='linear')
+    fig.append_trace(trace3, 1, 3)
+    fig.append_trace(trace4, 2, 1)
+    fig.append_trace(trace5, 2, 2)
+    fig.append_trace(trace6, 2, 3)
+    fig.append_trace(trace7, 3, 1)
+    fig.append_trace(trace8, 3, 2)
+    fig.append_trace(trace9, 3, 3)
+    fig['layout'].update(showlegend=False)
+    fig['layout']['yaxis1'].update(type='linear',
+                                   ticks='outside',
+                                   showgrid=False)
+    fig['layout']['yaxis2'].update(type='linear',
+                                   ticks='outside',
+                                   showgrid=False)
+    fig['layout']['yaxis3'].update(type='linear',
+                                   ticks='outside',
+                                   showgrid=False)
+    fig['layout']['yaxis4'].update(type='linear',
+                                   ticks='outside',
+                                   showgrid=False)
+    fig['layout']['yaxis5'].update(type='linear',
+                                   ticks='outside',
+                                   showgrid=False)
+    fig['layout']['yaxis6'].update(type='linear',
+                                   ticks='outside',
+                                   showgrid=False)
+    fig['layout']['yaxis7'].update(type='linear',
+                                   ticks='outside',
+                                   showgrid=False)
+    fig['layout']['yaxis8'].update(type='linear',
+                                   ticks='outside',
+                                   showgrid=False)
+    fig['layout']['yaxis9'].update(type='linear',
+                                   ticks='outside',
+                                   showgrid=False)
+    fig['layout']['xaxis1'].update(type='linear', title = x1title,
+                                   ticks = 'outside',
+                                   showgrid=False)
+    fig['layout']['xaxis2'].update(type='linear', title = x2title,
+                                   ticks = 'outside',
+                                   showgrid=False)
+    fig['layout']['xaxis3'].update(type='linear', title = x3title,
+                                   ticks = 'outside',
+                                   showgrid=False)
+    fig['layout']['xaxis4'].update(type='linear', title = x4title,
+                                   ticks = 'outside',
+                                   showgrid=False)
+    fig['layout']['xaxis5'].update(type='linear', title = x5title,
+                                   ticks = 'outside',
+                                   showgrid=False)
+    fig['layout']['xaxis6'].update(type='linear', title = x6title,
+                                   ticks = 'outside',
+                                   showgrid=False)
+    fig['layout']['xaxis7'].update(type='linear', title = x7title,
+                                   ticks = 'outside',
+                                   showgrid=False)
+    fig['layout']['xaxis8'].update(type='linear', title = x8title,
+                                   ticks = 'outside',
+                                   showgrid=False)
+    fig['layout']['xaxis9'].update(type='linear', title = x9title,
+                                   ticks = 'outside',
+                                   showgrid=False)
     py.iplot(fig, filename=filedata)
+
+
+def get_plotly_trace(xdata, ydata,
+                     weightdata, colourdata):
+    """Get trace for plotly subplot
+    """
+    return go.Scatter(x=xdata,
+                      y=ydata,
+                      mode='markers',
+                      marker=dict(size=weightdata,
+                                  color=colourdata,
+                                  colorscale='Viridis',
+                                  showscale=True
+                                  )
+                      )
 
 
 if __name__ == '__main__':
