@@ -44,24 +44,24 @@ function hessi_search_flares, $
 																																		(hessi_list.start_time le anytim(window_end)) and $
 																																		(hessi_list.sflag1 eq 1.) and (hessi_list.flags[17] eq 1.) and (hessi_list.flags[16] le 4.) and $
 																																		(hessi_list.x_position LE hcx_range) and (hessi_list.y_position GE -hcy_range) and $
-																																		(hessi_list.y_position LE polar))
+																																		(hessi_list.y_position LE polar) and (hessi_list.y_position GE -polar))
 				if (hi_pa GE 90. and hi_pa LT 180.) then hessi_dates = where((hessi_list.start_time ge anytim(window_start)) and $
 																																			(hessi_list.start_time le anytim(window_end)) and $
 																																			(hessi_list.sflag1 eq 1.) and (hessi_list.flags[17] eq 1.) and (hessi_list.flags[16] le 4.) and $
 																																			(hessi_list.x_position LE hcx_range) and (hessi_list.y_position LE hcy_range) and $
-																																			(hessi_list.y_position LE polar))
+																																			(hessi_list.y_position LE polar) and (hessi_list.y_position GE -polar))
 			endif
 			if (hi_pa GE 180. and hi_pa LE 360.) then begin
 				if (hi_pa GE 180. and hi_pa LT 270.) then hessi_dates = where((hessi_list.start_time ge anytim(window_start)) and $
 																																			(hessi_list.start_time le anytim(window_end)) and $
 																																			(hessi_list.sflag1 eq 1.) and (hessi_list.flags[17] eq 1.) and (hessi_list.flags[16] le 4.) and $
 																																			(hessi_list.x_position GE -hcx_range) and (hessi_list.y_position LE hcy_range) and $
-																																			(hessi_list.y_position LE polar))
+																																			(hessi_list.y_position LE polar) and (hessi_list.y_position GE -polar))
 				if (hi_pa GE 270. and hi_pa LT 360.) then hessi_dates = where((hessi_list.start_time ge anytim(window_start)) and $
 																																			(hessi_list.start_time le anytim(window_end)) and $
 																																			(hessi_list.sflag1 eq 1.) and (hessi_list.flags[17] eq 1.) and (hessi_list.flags[16] le 4.) and $
 																																			(hessi_list.x_position GE -hcx_range) and (hessi_list.y_position GE -hcy_range) and $
-																																			(hessi_list.y_position LE polar))
+																																			(hessi_list.y_position LE polar) and (hessi_list.y_position GE -polar))
 			endif
 		end
 		1: begin
@@ -69,31 +69,31 @@ function hessi_search_flares, $
 				hessi_dates = where((hessi_list.start_time ge anytim(window_start)) and $
 														(hessi_list.start_time le anytim(window_end)) and $
 														(hessi_list.sflag1 eq 1.) and (hessi_list.flags[17] eq 1.) and (hessi_list.flags[16] le 4.) and $
-														(hessi_list.y_position LE polar))
+														(hessi_list.y_position LE polar) and (hessi_list.y_position GE -polar))
 			endif else begin
 				if (cor2_pa GE 0. and cor2_pa LT 180.) then begin
 					if (cor2_pa GE 0. and cor2_pa LT 90.) then hessi_dates = where((hessi_list.start_time ge anytim(window_start)) and $
 																																																				(hessi_list.start_time le anytim(window_end)) and $
 																																																				(hessi_list.sflag1 eq 1.) and (hessi_list.flags[17] eq 1.) and (hessi_list.flags[16] le 4.) and $
 																																																				(hessi_list.x_position LE hcx_range) and (hessi_list.y_position GE -hcy_range) and $
-																																																				(hessi_list.y_position LE polar))
+																																																				(hessi_list.y_position LE polar) and (hessi_list.y_position GE -polar))
 					if (cor2_pa GE 90. and cor2_pa LT 180.) then hessi_dates = where((hessi_list.start_time ge anytim(window_start)) and $
 																																																					(hessi_list.start_time le anytim(window_end)) and $
 																																																					(hessi_list.sflag1 eq 1.) and (hessi_list.flags[17] eq 1.) and (hessi_list.flags[16] le 4.) and $
 																																																					(hessi_list.x_position LE hcx_range) and (hessi_list.y_position LE hcy_range) and $
-																																																					(hessi_list.y_position LE polar))
+																																																					(hessi_list.y_position LE polar) and (hessi_list.y_position GE -polar))
 				endif
 				if (cor2_pa GE 180. and cor2_pa LE 360.) then begin
 					if (cor2_pa GE 180. and cor2_pa LT 270.) then hessi_dates = where((hessi_list.start_time ge anytim(window_start)) and $
 																																																					(hessi_list.start_time le anytim(window_end)) and $
 																																																					(hessi_list.sflag1 eq 1.) and (hessi_list.flags[17] eq 1.) and (hessi_list.flags[16] le 4.) and $
 																																																					(hessi_list.x_position GE -hcx_range) and (hessi_list.y_position LE hcy_range) and $
-																																																					(hessi_list.y_position LE polar))
+																																																					(hessi_list.y_position LE polar) and (hessi_list.y_position GE -polar))
 					if (cor2_pa GE 270. and cor2_pa LT 360.) then hessi_dates = where((hessi_list.start_time ge anytim(window_start)) and $
 																																																					(hessi_list.start_time le anytim(window_end)) and $
 																																																					(hessi_list.sflag1 eq 1.) and (hessi_list.flags[17] eq 1.) and (hessi_list.flags[16] le 4.) and $
 																																																					(hessi_list.x_position GE -hcx_range) and (hessi_list.y_position GE -hcy_range) and $
-																																																					(hessi_list.y_position LE polar))
+																																																					(hessi_list.y_position LE polar) and (hessi_list.y_position GE -polar))
 				endif
 			endelse
 		end

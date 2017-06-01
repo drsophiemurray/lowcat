@@ -36,21 +36,21 @@ function lmsalssw_search, $
 					if (hi_pa GE 0. and hi_pa LT 90.) then ssw_dates = where((anytim(ssw_list.fstart) ge anytim(window_start)) and $
 																																		(anytim(ssw_list.fstart) le anytim(window_end)) and $
 																																		(ssw_list.xcen LE hcx_range) and (ssw_list.ycen GE -hcy_range) and $
-																																		(ssw_list.ycen LE polar))
+																																		(ssw_list.ycen LE polar) and (ssw_list.ycen GE -polar))
 					if (hi_pa GE 90. and hi_pa LT 180.) then ssw_dates = where((anytim(ssw_list.fstart) ge anytim(window_start)) and $
 																																		(anytim(ssw_list.fstart) le anytim(window_end)) and $
 																																		(ssw_list.xcen LE hcx_range) and (ssw_list.ycen LE hcy_range) and $
-																																		(ssw_list.ycen LE polar))
+																																		(ssw_list.ycen LE polar) and (ssw_list.ycen GE -polar))
 				endif
 				if (hi_pa GE 180. and hi_pa LE 360.) then begin
 					if (hi_pa GE 180. and hi_pa LT 270.) then ssw_dates = where((anytim(ssw_list.fstart) ge anytim(window_start)) and $
 																																			(anytim(ssw_list.fstart) le anytim(window_end)) and $
 																																			(ssw_list.xcen GE -hcx_range) and (ssw_list.ycen LE hcy_range) and $
-																																			(ssw_list.ycen LE polar))
+																																			(ssw_list.ycen LE polar) and (ssw_list.ycen GE -polar))
 					if (hi_pa GE 270. and hi_pa LT 360.) then ssw_dates = where((anytim(ssw_list.fstart) ge anytim(window_start)) and $
 																																			(anytim(ssw_list.fstart) le anytim(window_end)) and $
 																																			(ssw_list.xcen GE -hcx_range) and (ssw_list.ycen GE -hcy_range) and $
-																																			(ssw_list.ycen LE polar))
+																																			(ssw_list.ycen LE polar) and (ssw_list.ycen GE -polar))
 				endif
 			end
 			1: begin
@@ -58,27 +58,27 @@ function lmsalssw_search, $
 				if (cor2_halo) EQ 'II' or (cor2_halo) EQ 'III' or (cor2_halo) EQ 'IV' then begin
 					ssw_dates = where((anytim(ssw_list.fstart) ge anytim(window_start)) and $
 														(anytim(ssw_list.fstart) le anytim(window_end)) and $
-														(ssw_list.ycen LE polar))
+														(ssw_list.ycen LE polar) and (ssw_list.ycen GE -polar))
 				endif else begin
 					if (cor2_pa GE 0. and cor2_pa LT 180.) then begin
 						if (cor2_pa GE 0. and cor2_pa LT 90.) then ssw_dates = where((anytim(ssw_list.fstart) ge anytim(window_start)) and $
 																																																			(anytim(ssw_list.fstart) le anytim(window_end)) and $
 																																																			(ssw_list.xcen LE hcx_range) and (ssw_list.ycen GE -hcy_range) and $
-																																																			(ssw_list.ycen LE polar))
+																																																			(ssw_list.ycen LE polar) and (ssw_list.ycen GE -polar))
 						if (cor2_pa GE 90. and cor2_pa LT 180.) then ssw_dates = where((anytim(ssw_list.fstart) ge anytim(window_start)) and $
 																																																				(anytim(ssw_list.fstart) le anytim(window_end)) and $
 																																																				(ssw_list.xcen LE hcx_range) and (ssw_list.ycen LE hcy_range) and $
-																																																				(ssw_list.ycen LE polar))
+																																																				(ssw_list.ycen LE polar) and (ssw_list.ycen GE -polar))
 					endif
 					if (cor2_pa GE 180. and cor2_pa LE 360.) then begin
 						if (cor2_pa GE 180. and cor2_pa LT 270.) then ssw_dates = where((anytim(ssw_list.fstart) ge anytim(window_start)) and $
 																																																					(anytim(ssw_list.fstart) le anytim(window_end)) and $
 																																																					(ssw_list.xcen GE -hcx_range) and (ssw_list.ycen LE hcy_range) and $
-																																																					(ssw_list.ycen LE polar))
+																																																					(ssw_list.ycen LE polar) and (ssw_list.ycen GE -polar))
 						if (cor2_pa GE 270. and cor2_pa LT 360.) then ssw_dates = where((anytim(ssw_list.fstart) ge anytim(window_start)) and $
 																																																					(anytim(ssw_list.fstart) le anytim(window_end)) and $
 																																																					(ssw_list.xcen GE -hcx_range) and (ssw_list.ycen GE -hcy_range) and $
-																																																					(ssw_list.ycen LE polar))
+																																																					(ssw_list.ycen LE polar) and (ssw_list.ycen GE -polar))
 					endif
 				endelse
 			end
