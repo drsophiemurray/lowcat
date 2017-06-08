@@ -63,6 +63,7 @@ function get_flarear_info, $
 		0: cme_time = cme_properties.cor2_ts
 		1: cme_time = cme_properties.cor2_time
 	endcase
+; 	cme_time = cme_properties.cor2_ts
   
 	; Define search window to match flare event to CME
 	flare_ts = anytim(cme_time) - ((cor2_r - flare_r) / cme_min) 
@@ -100,6 +101,7 @@ function get_flarear_info, $
 													hcx_range = hcx_range, hcy_range = hcy_range)
 	
 	; Output this info
+; 	if typename(sswstr) ne 'STRING' then begin
 	if sswstr.fl_starttime ne ' ' then begin
 		outstr.fl_type = sswstr.fl_type
 		outstr.fl_starttime = sswstr.fl_starttime
@@ -132,6 +134,7 @@ function get_flarear_info, $
 																	hcx_range = hcx_range, hcy_range = hcy_range)
  
 			; Output this info
+;			if typename(swpcstr) ne 'STRING' then begin
 			if swpcstr.fl_starttime ne ' ' then begin
 				outstr.fl_type = swpcstr.fl_type
 				outstr.fl_starttime = swpcstr.fl_starttime
@@ -163,13 +166,14 @@ function get_flarear_info, $
 	endif
 
 	if keyword_set(hessi_search) and flare eq 0. then begin
- 		hessistr = hessi_search_flares(window_start = outstr.fl_ts, window_end = outstr.fl_tf, $
+		hessistr = hessi_search_flares(window_start = outstr.fl_ts, window_end = outstr.fl_tf, $
 																	hi_pan = cme_properties.hi_pan, hi_pas = cme_properties.hi_pas, cor2_pa = cme_properties.cor2_pa, cor2_halo = cme_properties.cor2_halo, $
 																	flare = flare, cme_exist = cme_exist, $
 																	hcx_range = hcx_range, hcy_range = hcy_range)
 		
 		; Output this info
-  if hessistr.fl_starttime ne ' ' then begin
+;		if typename(hessistr) ne 'STRING' then begin
+        if hessistr.fl_starttime ne ' ' then begin
 			outstr.fl_type = hessistr.fl_type
 			outstr.fl_starttime = hessistr.fl_starttime
 			outstr.fl_endtime = hessistr.fl_endtime
@@ -185,7 +189,21 @@ function get_flarear_info, $
 		endif
 		
 	endif else begin
-		print, 'Skipping HESSI'
+		if outstr.fl_loc eq " " then begin
+			print, 'Getting location from HESSI'
+			hessistr = hessi_search_flares(window_start = outstr.fl_ts, window_end = outstr.fl_tf, $
+																	hi_pan = cme_properties.hi_pan, hi_pas = cme_properties.hi_pas, cor2_pa = cme_properties.cor2_pa, cor2_halo = cme_properties.cor2_halo, $
+																	flare = flare, cme_exist = cme_exist, $
+																	hcx_range = hcx_range, hcy_range = hcy_range)
+			outstr.fl_loc = hessistr.fl_loc
+			hgx = hessistr.hgx
+			hgy = hessistr.hgy
+			hcx = hessistr.hcx
+			hcy = hessistr.hcy
+		endif else begin
+			print, 'Skipping HESSI'
+		endelse
+		
 	endelse
 ; 
 	; --------------------------------------------------------------------------------------------------------------------------------------------
@@ -218,6 +236,20 @@ function get_flarear_info, $
 			outstr.srs_area = srsstr.srs_area
 			outstr.srs_ll = srsstr.srs_ll
 			outstr.srs_nn = srsstr.srs_nn
+			
+			; If still no flare location, uses SRS location
+			if ((outstr.fl_loc eq " ") and (outstr.srs_loc ne " ")) then begin
+				srs_hg = locstring2int(location=outstr.srs_loc)
+				hg2hc, srs_hg[1], srs_hg[0], fl_hcx, fl_hcy, date = outstr.srs_time, rotdate = outstr.fl_peaktime 
+				hc2hg, fl_hcx, fl_hcy, fl_hgx, fl_hgy, date = outstr.fl_peaktime
+				fl_hg = locint2string(latitude = fl_hgy, longitude = fl_hgx)
+				outstr.fl_loc = fl_hg
+				hgx = fl_hgx
+				hgy = fl_hgy
+				hcx = fl_hcx
+				hcy = fl_hcy
+			endif
+
 		endif
 
 	; == When there are no flare candidates ==
