@@ -65,6 +65,7 @@ def main():
                  y1data = data['COR2_V'],
                  weightdata = '10',
                  colourdata = data['COR2_WIDTH'],
+                 colourdata_max = 360, colourdata_min = 0,
                  filedata = 'new_smart_v_width') #weightdata='10'
 
     # Output a .csv file with fixed data
@@ -268,27 +269,46 @@ def plotly_multi(x1data, x1title,
                  y1data,
                  weightdata,
                  colourdata,
+                 colourdata_max, colourdata_min,
                  filedata):
     """Make multi subplots in plotly
     """
     trace1 = get_plotly_trace(x1data, y1data,
-                              weightdata, colourdata)
+                              weightdata, colourdata,
+                              colourdata_max, colourdata_min,
+                              showscale=True)
     trace2 = get_plotly_trace(x2data, y1data,
-                              weightdata, colourdata)
+                              weightdata, colourdata,
+                              colourdata_max, colourdata_min,
+                              showscale=False)
     trace3 = get_plotly_trace(x3data, y1data,
-                              weightdata, colourdata)
+                              weightdata, colourdata,
+                              colourdata_max, colourdata_min,
+                              showscale=False)
     trace4 = get_plotly_trace(x4data, y1data,
-                              weightdata, colourdata)
+                              weightdata, colourdata,
+                              colourdata_max, colourdata_min,
+                              showscale=False)
     trace5 = get_plotly_trace(x5data, y1data,
-                              weightdata, colourdata)
+                              weightdata, colourdata,
+                              colourdata_max, colourdata_min,
+                              showscale=False)
     trace6 = get_plotly_trace(x6data, y1data,
-                              weightdata, colourdata)
+                              weightdata, colourdata,
+                              colourdata_max, colourdata_min,
+                              showscale=False)
     trace7 = get_plotly_trace(x7data, y1data,
-                              weightdata, colourdata)
+                              weightdata, colourdata,
+                              colourdata_max, colourdata_min,
+                              showscale=False)
     trace8 = get_plotly_trace(x8data, y1data,
-                              weightdata, colourdata)
+                              weightdata, colourdata,
+                              colourdata_max, colourdata_min,
+                              showscale=False)
     trace9 = get_plotly_trace(x9data, y1data,
-                              weightdata, colourdata)
+                              weightdata, colourdata,
+                              colourdata_max, colourdata_min,
+                              showscale=False)
     fig = tools.make_subplots(rows=3, cols=3)
     fig.append_trace(trace1, 1, 1)
     fig.append_trace(trace2, 1, 2)
@@ -415,7 +435,9 @@ def plotly_multi(x1data, x1title,
 
 
 def get_plotly_trace(xdata, ydata,
-                     weightdata, colourdata):
+                     weightdata, colourdata,
+                     colourdata_max, colourdata_min,
+                     showscale):
     """Get trace for plotly subplot
     """
     return go.Scatter(x=xdata,
@@ -424,7 +446,10 @@ def get_plotly_trace(xdata, ydata,
                       marker=dict(size=weightdata,
                                   color=colourdata,
                                   colorscale='Viridis',
-                                  showscale=True
+                                  showscale=showscale,
+                                  cauto=False,
+                                  cmax=colourdata_max,
+                                  cmin=colourdata_min
                                   )
                       )
 
