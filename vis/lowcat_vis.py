@@ -53,20 +53,39 @@ def main():
     data['FL_DURATION'] = calculate_flare_duration(data['FL_STARTTIME'], data['FL_ENDTIME'])
 
     # Create multiplots subplots in plot.ly
-    plotly_multi(x1data = data['FL_GOES'], x1title = 'GOES FLux',
-                 x2data = data['FL_DURATION'],  x2title = 'Flare duration',
-                 x3data = data['SRS_NN'], x3title = 'SRS no. spots',
-                 x4data = data['SMART_TOTAREA'], x4title = 'Total area [m.s.h.]',
-                 x5data = data['SMART_TOTFLX'], x5title = 'Total flux [Mx]',
-                 x6data = data['SMART_BMEAN'], x6title = 'Bmean [G]',
-                 x7data = data['SMART_BIPOLESEP'], x7title = 'Bipole separation [Mm]',
-                 x8data=data['SMART_RVALUE'], x8title = 'log10 R value [Mx]',
+    plotly_multi(x1data = np.log10(data['FL_GOES'].astype('float64')), x1title = 'log10 GOES Flux',
+                 x2data = np.log10(data['FL_DURATION'].astype('float64')),  x2title = 'log10 Flare duration',
+                 x3data = np.log10(data['SRS_NN'].astype('float64')), x3title = 'log10 SRS no. spots',
+                 x4data = np.log10(data['SMART_TOTAREA'].astype('float64')), x4title = 'log10 Total area [m.s.h.]',
+                 x5data = np.log10(data['SMART_TOTFLX'].astype('float64')), x5title = 'log10 Total flux [Mx]',
+                 x6data = np.log10(data['SMART_BMEAN'].astype('float64')), x6title = 'log10 Bmean [G]',
+                 x7data = np.log10(data['SMART_BIPOLESEP'].astype('float64')), x7title = 'log10 Bipole separation [Mm]',
+                 x8data = data['SMART_RVALUE'], x8title = 'log10 R value [Mx]',
                  x9data = data['SMART_WLSG'], x9title = 'log10 WLsg [G/Mm]',
-                 y1data = data['COR2_V'],
+                 y1data = data['COR2_V'], y1title = 'CME Speed [ms<sup>-1</sup>]',
+                 y1range = [0, 1480],
                  weightdata = '10',
-                 colourdata = data['COR2_WIDTH'],
-                 colourdata_max = 360, colourdata_min = 0,
-                 filedata = 'new_smart_v_width') #weightdata='10'
+                 colourdata = data['COR2_WIDTH'], colourdata_title = 'CME width [<sup>o</sup>]',
+                 colourdata_max = 360, colourdata_min = 0, colourdata_step = 45,
+                 filedata = 'log_smart_v_width')
+
+    plotly_multi(x1data = np.log10(data['FL_GOES'].astype('float64')), x1title = 'log10 GOES Flux',
+                 x2data = np.log10(data['FL_DURATION'].astype('float64')),  x2title = 'log10 Flare duration',
+                 x3data = np.log10(data['SRS_NN'].astype('float64')), x3title = 'log10 SRS no. spots',
+                 x4data = np.log10(data['SMART_TOTAREA'].astype('float64')), x4title = 'log10 Total area [m.s.h.]',
+                 x5data = np.log10(data['SMART_TOTFLX'].astype('float64')), x5title = 'log10 Total flux [Mx]',
+                 x6data = np.log10(data['SMART_BMEAN'].astype('float64')), x6title = 'log10 Bmean [G]',
+                 x7data = np.log10(data['SMART_BIPOLESEP'].astype('float64')), x7title = 'log10 Bipole separation [Mm]',
+                 x8data = data['SMART_RVALUE'].astype('float64'), x8title = 'log10 R value [Mx]',
+                 x9data = data['SMART_WLSG'].astype('float64'), x9title = 'log10 WLsg [G/Mm]',
+                 y1data = np.log10(data['COR2_V'].astype('float64')), y1title = 'CME Speed [ms<sup>-1</sup>]',
+                 y1range = [np.log10(100), np.log10(4000)],
+                 weightdata = '10',
+                 colourdata = np.log10(data['FL_GOES'].astype('float64')), colourdata_title = 'GOES Flux [Mx]',
+                 colourdata_max = np.log10(1e-4), colourdata_min = np.log10(1e-7),
+                 colourdata_step = np.log10(0.01),
+                 filedata = 'log_smart_v_goes') #A to  X
+#try log,e or natural log!
 
     # Output a .csv file with fixed data
     # data.to_csv('lowcat.csv')
@@ -100,7 +119,6 @@ def main():
     #              weightdata = '10',
     #              colourdata = plotdata['COR2_WIDTH'],
     #              filedata = 'flarecast_v_width')
-    # abstotdedt
     #
     # csvdata = pd.read_csv('/Users/sophie/flarecastcomma.csv')
     #
@@ -266,48 +284,48 @@ def plotly_multi(x1data, x1title,
                  x7data, x7title,
                  x8data, x8title,
                  x9data, x9title,
-                 y1data,
+                 y1data, y1title, y1range,
                  weightdata,
-                 colourdata,
-                 colourdata_max, colourdata_min,
+                 colourdata, colourdata_title,
+                 colourdata_max, colourdata_min, colourdata_step,
                  filedata):
     """Make multi subplots in plotly
     """
     trace1 = get_plotly_trace(x1data, y1data,
-                              weightdata, colourdata,
-                              colourdata_max, colourdata_min,
+                              weightdata, colourdata, colourdata_title,
+                              colourdata_max, colourdata_min, colourdata_step,
                               showscale=True)
     trace2 = get_plotly_trace(x2data, y1data,
-                              weightdata, colourdata,
-                              colourdata_max, colourdata_min,
+                              weightdata, colourdata, colourdata_title,
+                              colourdata_max, colourdata_min, colourdata_step,
                               showscale=False)
     trace3 = get_plotly_trace(x3data, y1data,
-                              weightdata, colourdata,
-                              colourdata_max, colourdata_min,
+                              weightdata, colourdata, colourdata_title,
+                              colourdata_max, colourdata_min, colourdata_step,
                               showscale=False)
     trace4 = get_plotly_trace(x4data, y1data,
-                              weightdata, colourdata,
-                              colourdata_max, colourdata_min,
+                              weightdata, colourdata, colourdata_title,
+                              colourdata_max, colourdata_min, colourdata_step,
                               showscale=False)
     trace5 = get_plotly_trace(x5data, y1data,
-                              weightdata, colourdata,
-                              colourdata_max, colourdata_min,
+                              weightdata, colourdata, colourdata_title,
+                              colourdata_max, colourdata_min, colourdata_step,
                               showscale=False)
     trace6 = get_plotly_trace(x6data, y1data,
-                              weightdata, colourdata,
-                              colourdata_max, colourdata_min,
+                              weightdata, colourdata, colourdata_title,
+                              colourdata_max, colourdata_min, colourdata_step,
                               showscale=False)
     trace7 = get_plotly_trace(x7data, y1data,
-                              weightdata, colourdata,
-                              colourdata_max, colourdata_min,
+                              weightdata, colourdata, colourdata_title,
+                              colourdata_max, colourdata_min, colourdata_step,
                               showscale=False)
     trace8 = get_plotly_trace(x8data, y1data,
-                              weightdata, colourdata,
-                              colourdata_max, colourdata_min,
+                              weightdata, colourdata, colourdata_title,
+                              colourdata_max, colourdata_min, colourdata_step,
                               showscale=False)
     trace9 = get_plotly_trace(x9data, y1data,
-                              weightdata, colourdata,
-                              colourdata_max, colourdata_min,
+                              weightdata, colourdata, colourdata_title,
+                              colourdata_max, colourdata_min, colourdata_step,
                               showscale=False)
     fig = tools.make_subplots(rows=3, cols=3)
     fig.append_trace(trace1, 1, 1)
@@ -329,103 +347,132 @@ def plotly_multi(x1data, x1title,
     fig['layout']['yaxis1'].update(type='linear',
                                    ticks='outside',
                                    showgrid=False,
-                                   domain=[0.7, 0.95]
+                                   domain=[0.7, 0.95],
+                                   autorange=False,
+                                   range=y1range
                                    )
     fig['layout']['yaxis2'].update(type='linear',
                                    ticks='outside',
                                    showgrid=False,
                                    showticklabels=False,
-                                   domain=[0.7, 0.95]
+                                   domain=[0.7, 0.95],
+                                   autorange=False,
+                                   range=y1range
                                    )
     fig['layout']['yaxis3'].update(type='linear',
                                    ticks='outside',
                                    showgrid=False,
                                    showticklabels=False,
-                                   domain=[0.7, 0.95]
+                                   domain=[0.7, 0.95],
+                                   autorange=False,
+                                   range=y1range
                                    )
     fig['layout']['yaxis4'].update(type='linear',
+                                   title=y1title,
+                                   titlefont=dict(size=12),
                                    ticks='outside',
                                    showgrid=False,
-                                   domain=[0.35, 0.6]
+                                   domain=[0.35, 0.6],
+                                   autorange=False,
+                                   range=y1range
                                    )
     fig['layout']['yaxis5'].update(type='linear',
                                    ticks='outside',
                                    showgrid=False,
                                    showticklabels=False,
-                                   domain=[0.35, 0.6]
+                                   domain=[0.35, 0.6],
+                                   autorange=False,
+                                   range=y1range
                                    )
     fig['layout']['yaxis6'].update(type='linear',
                                    ticks='outside',
                                    showgrid=False,
                                    showticklabels=False,
-                                   domain=[0.35, 0.6]
+                                   domain=[0.35, 0.6],
+                                   autorange=False,
+                                   range=y1range
                                    )
     fig['layout']['yaxis7'].update(type='linear',
                                    ticks='outside',
                                    showgrid=False,
-                                   domain=[0, 0.25]
+                                   domain=[0, 0.25],
+                                   autorange=False,
+                                   range=y1range
                                    )
     fig['layout']['yaxis8'].update(type='linear',
                                    ticks='outside',
                                    showgrid=False,
                                    showticklabels=False,
-                                   domain=[0, 0.25]
+                                   domain=[0, 0.25],
+                                   autorange=False,
+                                   range=y1range
                                    )
     fig['layout']['yaxis9'].update(type='linear',
                                    ticks='outside',
                                    showgrid=False,
                                    showticklabels=False,
-                                   domain=[0, 0.25]
+                                   domain=[0, 0.25],
+                                   autorange=False,
+                                   range=y1range
                                    )
-    fig['layout']['xaxis1'].update(type='linear', title = x1title,
+    fig['layout']['xaxis1'].update(type='linear',
+                                   title = x1title,
                                    titlefont=dict(size=12),
                                    ticks = 'outside',
                                    showgrid=False,
                                    domain=[0.1, 0.35]
                                    )
-    fig['layout']['xaxis2'].update(type='linear', title = x2title,
+    fig['layout']['xaxis2'].update(type='linear',
+                                   title = x2title,
                                    titlefont=dict(size=12),
                                    ticks = 'outside',
                                    showgrid=False,
                                    domain=[0.4, 0.65]
                                    )
-    fig['layout']['xaxis3'].update(type='linear', title = x3title,
+    fig['layout']['xaxis3'].update(type='linear',
+                                   title = x3title,
                                    titlefont=dict(size=12),
                                    ticks = 'outside',
                                    showgrid=False,
                                    domain=[0.7, 0.95]
                                    )
-    fig['layout']['xaxis4'].update(type='linear', title = x4title,
+    fig['layout']['xaxis4'].update(type='linear',
+                                   title = x4title,
                                    titlefont=dict(size=12),
                                    ticks = 'outside',
                                    showgrid=False,
                                    domain=[0.1, 0.35]
                                    )
-    fig['layout']['xaxis5'].update(type='linear', title = x5title,
+    fig['layout']['xaxis5'].update(type='linear',
+                                   title = x5title,
                                    titlefont=dict(size=12),
                                    ticks = 'outside',
                                    showgrid=False,
                                    domain=[0.4, 0.65]
                                    )
-    fig['layout']['xaxis6'].update(type='linear', title = x6title,
+    fig['layout']['xaxis6'].update(type='linear',
+                                   title = x6title,
                                    titlefont=dict(size=12),
                                    ticks = 'outside',
                                    showgrid=False,
                                    domain=[0.7, 0.95]
                                    )
-    fig['layout']['xaxis7'].update(type='linear', title = x7title,
+    fig['layout']['xaxis7'].update(type='linear',
+                                   title = x7title,
                                    titlefont=dict(size=12),
                                    ticks = 'outside',
                                    showgrid=False,
                                    domain=[0.1, 0.35]
                                    )
-    fig['layout']['xaxis8'].update(type='linear', title = x8title,
+    fig['layout']['xaxis8'].update(type='linear',
+                                   title = x8title,
                                    titlefont=dict(size=12),
                                    ticks = 'outside',
                                    showgrid=False,
                                    domain=[0.4, 0.65]
                                    )
-    fig['layout']['xaxis9'].update(type='linear', title = x9title,
+    fig['layout']['xaxis9'].update(type='linear',
+                                   title = x9title,
                                    titlefont=dict(size=12),
                                    ticks = 'outside',
                                    showgrid=False,
@@ -435,8 +482,8 @@ def plotly_multi(x1data, x1title,
 
 
 def get_plotly_trace(xdata, ydata,
-                     weightdata, colourdata,
-                     colourdata_max, colourdata_min,
+                     weightdata, colourdata, colourdata_title,
+                     colourdata_max, colourdata_min, colourdata_step,
                      showscale):
     """Get trace for plotly subplot
     """
@@ -449,7 +496,16 @@ def get_plotly_trace(xdata, ydata,
                                   showscale=showscale,
                                   cauto=False,
                                   cmax=colourdata_max,
-                                  cmin=colourdata_min
+                                  cmin=colourdata_min,
+                                  colorbar = dict(title=colourdata_title,
+                                                  x=1.01,
+                                                  y=0.47,
+                                                  len=1,
+                                                  thickness=25,
+                                                  thicknessmode='pixels',
+                                                  xpad=10,
+                                                  ypad=10,
+                                                  dtick=colourdata_step)
                                   )
                       )
 
