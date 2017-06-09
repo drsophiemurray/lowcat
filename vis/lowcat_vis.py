@@ -15,6 +15,8 @@ Notes:
 CAT_FOLDER = '/Users/sophie/GitHub/lowcat/data/'
 JSON_FILE = 'lowcat.json'
 SAV_FILE = 'lowcat.sav' #outstr and cmelist
+FLARECAST_FILE = '/Users/sophie/Dropbox/flarecast_helcats/helcats_list_flarecast_properties_30May17_3.txt'
+FLARECAST_CSV = '/Users/sophie/flarecast.csv'
 
 import numpy as np
 import datetime as dt
@@ -63,11 +65,71 @@ def main():
                  y1data = data['COR2_V'],
                  weightdata = '10',
                  colourdata = data['COR2_WIDTH'],
-                 filedata = 'all_v_width')
+                 filedata = 'new_smart_v_width') #weightdata='10'
 
     # Output a .csv file with fixed data
     # data.to_csv('lowcat.csv')
 
+    # Jordan's data
+    # data = pd.read_json(FLARECAST_FILE)
+    #
+    # # Find elements of series that actually have data (either nans or dictionarys)
+    # logic = np.ones(len(data['FC_data']))
+    # for i in range(len(data['FC_data'])):
+    #     if isinstance(data['FC_data'][i], float):
+    #         logic[i] = 0
+    # hub = data['FC_data'][logic == 1.].index
+    # plotdata = data.iloc[hub,]
+    # #[u'ising_energy_part_br', u'ising_energy_br', u'alpha_exp_cwt_btot', u'alpha_exp_cwt_blos',
+    # # u'alpha_exp_fft_btot', u'alpha_exp_cwt_br', u'sharp_kw', u'r_value_br_logr', u'decay_index_blos',
+    # # u'flow_field_bvec', u'alpha_exp_fft_br', u'r_value_blos_logr', u'mpil_br', u'beff_blos', u'decay_index_br',
+    # # u'helicity_energy_bvec', u'wlsg_br', u'alpha_exp_fft_blos', u'mpil_blos', u'fc_data_q', u'ising_energy_blos']
+    #
+    #
+    # plotly_multi(x1data = plotdata['FC_data']['r_value_blos_logr'], x1title = 'GOES FLux',
+    #              x2data = plotdata['FC_data']['decay_index_blos']['tot_l_over_hmin'],  x2title = 'Flare duration',
+    #              x3data = plotdata['FC_data']['ising_energy_blos']['ising_energy'], x3title = 'SRS no. spots',
+    #              x4data = plotdata['FC_data']['mpil_blos']['tot_length'], x4title = 'Total area [m.s.h.]',
+    #              x5data = plotdata['FC_data']['r_value_blos_logr'], x5title = 'Total flux [Mx]',
+    #              x6data = plotdata['FC_data']['wlsg_blos']['value_int'], x6title = 'Bmean [G]',
+    #              x7data = plotdata['FC_data']['flow_field_bvec']['vz_mean'], x7title = 'Bipole separation [Mm]',
+    #              x8data = plotdata['FC_data']['helicity_energy_bvec']['abs_tot_dhdt_in'], x8title = 'log10 R value [Mx]',
+    #              x9data = plotdata['FC_data']['frdim_err']['sfunction_Blos'], x9title = 'log10 WLsg [G/Mm]',
+    #              y1data = plotdata['FC_data']['sharp_kw']['sflux']['total'],
+    #              weightdata = '10',
+    #              colourdata = plotdata['COR2_WIDTH'],
+    #              filedata = 'flarecast_v_width')
+    # abstotdedt
+    #
+    # csvdata = pd.read_csv('/Users/sophie/flarecastcomma.csv')
+    #
+    # plotly_multi(x1data = csvdata['R Value Blos Logr'], x1title = 'Log R value blos',
+    #              x2data = csvdata['tot l over hmin (FC data.decay index blos)'],  x2title = 'Tot decay index blos',
+    #              x3data = csvdata['ising energy (FC data.ising energy blos)'], x3title = 'Ising energy blos',
+    #              x4data = csvdata['tot length (FC data.mpil blos)'], x4title = 'Tot PIL length blos',
+    #              x5data = csvdata['tot usflux (FC data.mpil blos)'], x5title='tot usflux blos',
+    #              x6data = csvdata['Beff'], x6title = 'Beff',
+    #              x7data = csvdata['Diver'], x7title='Diver',
+    #              x8data = csvdata['W Shear'], x8title = 'W shear',
+    #              x9data = csvdata['Tot Uns Dedt Sh'], x9title = 'Tot Uns Dedt Sh',
+    #              y1data = csvdata['Cor2 V'],
+    #              weightdata = '10',
+    #              colourdata = csvdata['Cor2 Width'],
+    #              filedata = 'flarecast_v_width')
+    #
+    # plotly_multi(x1data = csvdata['total (FC data.sharp kw.gamma)'], x1title = 'total sharp gamma)',
+    #              x2data = csvdata['total (FC data.sharp kw.hgradbh)'],  x2title = 'total sharp hgradbh)',
+    #              x3data = csvdata['total (FC data.sharp kw.hgradbz)'], x3title = 'total sharp hgradbz)',
+    #              x4data = csvdata['total (FC data.sharp kw.hgradbt)'], x4title = 'total sharp hgradbt)',
+    #              x5data = csvdata['total (FC data.sharp kw.snetjzpp)'], x5title = 'total sharp snetjzpp)',
+    #              x6data = csvdata['total (FC data.sharp kw.twistp)'], x6title = 'total sharp twistp)',
+    #              x7data = csvdata['total (FC data.sharp kw.usflux)'], x7title = 'total sharp usflux)',
+    #              x8data = csvdata['total (FC data.sharp kw.usiz)'], x8title = 'total sharp usiz)',
+    #              x9data = csvdata['total (FC data.sharp kw.ushz)'], x9title = 'total sharp ushz)',
+    #              y1data = csvdata['Cor2 V'],
+    #              weightdata = '10',
+    #              colourdata = csvdata['Cor2 Width'],
+    #              filedata = 'flarecast_sharp_v_width')
 
 def fix_data(outstr):
     """Some data in the catalogue are in unfortunate format
@@ -237,61 +299,118 @@ def plotly_multi(x1data, x1title,
     fig.append_trace(trace7, 3, 1)
     fig.append_trace(trace8, 3, 2)
     fig.append_trace(trace9, 3, 3)
-    fig['layout'].update(showlegend=False)
+    fig['layout'].update(showlegend=False,
+                         margin=dict(t=20,
+                                     b=80,
+                                     l=80,
+                                     pad=0),
+                         font=dict(size=12)
+                         )
     fig['layout']['yaxis1'].update(type='linear',
                                    ticks='outside',
-                                   showgrid=False)
+                                   showgrid=False,
+                                   domain=[0.7, 0.95]
+                                   )
     fig['layout']['yaxis2'].update(type='linear',
                                    ticks='outside',
-                                   showgrid=False)
+                                   showgrid=False,
+                                   showticklabels=False,
+                                   domain=[0.7, 0.95]
+                                   )
     fig['layout']['yaxis3'].update(type='linear',
                                    ticks='outside',
-                                   showgrid=False)
+                                   showgrid=False,
+                                   showticklabels=False,
+                                   domain=[0.7, 0.95]
+                                   )
     fig['layout']['yaxis4'].update(type='linear',
                                    ticks='outside',
-                                   showgrid=False)
+                                   showgrid=False,
+                                   domain=[0.35, 0.6]
+                                   )
     fig['layout']['yaxis5'].update(type='linear',
                                    ticks='outside',
-                                   showgrid=False)
+                                   showgrid=False,
+                                   showticklabels=False,
+                                   domain=[0.35, 0.6]
+                                   )
     fig['layout']['yaxis6'].update(type='linear',
                                    ticks='outside',
-                                   showgrid=False)
+                                   showgrid=False,
+                                   showticklabels=False,
+                                   domain=[0.35, 0.6]
+                                   )
     fig['layout']['yaxis7'].update(type='linear',
                                    ticks='outside',
-                                   showgrid=False)
+                                   showgrid=False,
+                                   domain=[0, 0.25]
+                                   )
     fig['layout']['yaxis8'].update(type='linear',
                                    ticks='outside',
-                                   showgrid=False)
+                                   showgrid=False,
+                                   showticklabels=False,
+                                   domain=[0, 0.25]
+                                   )
     fig['layout']['yaxis9'].update(type='linear',
                                    ticks='outside',
-                                   showgrid=False)
+                                   showgrid=False,
+                                   showticklabels=False,
+                                   domain=[0, 0.25]
+                                   )
     fig['layout']['xaxis1'].update(type='linear', title = x1title,
+                                   titlefont=dict(size=12),
                                    ticks = 'outside',
-                                   showgrid=False)
+                                   showgrid=False,
+                                   domain=[0.1, 0.35]
+                                   )
     fig['layout']['xaxis2'].update(type='linear', title = x2title,
+                                   titlefont=dict(size=12),
                                    ticks = 'outside',
-                                   showgrid=False)
+                                   showgrid=False,
+                                   domain=[0.4, 0.65]
+                                   )
     fig['layout']['xaxis3'].update(type='linear', title = x3title,
+                                   titlefont=dict(size=12),
                                    ticks = 'outside',
-                                   showgrid=False)
+                                   showgrid=False,
+                                   domain=[0.7, 0.95]
+                                   )
     fig['layout']['xaxis4'].update(type='linear', title = x4title,
+                                   titlefont=dict(size=12),
                                    ticks = 'outside',
-                                   showgrid=False)
+                                   showgrid=False,
+                                   domain=[0.1, 0.35]
+                                   )
     fig['layout']['xaxis5'].update(type='linear', title = x5title,
+                                   titlefont=dict(size=12),
                                    ticks = 'outside',
-                                   showgrid=False)
+                                   showgrid=False,
+                                   domain=[0.4, 0.65]
+                                   )
     fig['layout']['xaxis6'].update(type='linear', title = x6title,
+                                   titlefont=dict(size=12),
                                    ticks = 'outside',
-                                   showgrid=False)
+                                   showgrid=False,
+                                   domain=[0.7, 0.95]
+                                   )
     fig['layout']['xaxis7'].update(type='linear', title = x7title,
+                                   titlefont=dict(size=12),
                                    ticks = 'outside',
-                                   showgrid=False)
+                                   showgrid=False,
+                                   domain=[0.1, 0.35]
+                                   )
     fig['layout']['xaxis8'].update(type='linear', title = x8title,
+                                   titlefont=dict(size=12),
                                    ticks = 'outside',
-                                   showgrid=False)
+                                   showgrid=False,
+                                   domain=[0.4, 0.65]
+                                   )
     fig['layout']['xaxis9'].update(type='linear', title = x9title,
+                                   titlefont=dict(size=12),
                                    ticks = 'outside',
-                                   showgrid=False)
+                                   showgrid=False,
+                                   domain=[0.7, 0.95]
+                                   )
     py.iplot(fig, filename=filedata)
 
 
@@ -308,6 +427,7 @@ def get_plotly_trace(xdata, ydata,
                                   showscale=True
                                   )
                       )
+
 
 
 if __name__ == '__main__':
