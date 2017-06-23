@@ -8,10 +8,10 @@ cor2_tf:            Search window end time to find corresponding COR 2 event
 cor2_time:          Launch time of selected candidate COR 2 event
 cor2_pa:            Position angle of selected candidate COR 2 event [degrees]
 cor2_width:         Angular width of selected candidate COR 2 event [degrees]
-cor2_v:             Mean speed of selected candidate COR 2 event [ms^-1]
-cor2_vsigma:        Error in mean speed of selected candidate COR 2 event [ms^-1]
-cor2_vmin:          Minimum speed of selected candidate COR 2 event [ms^-1]
-cor2_vmax:          Maximum speed of selected candidate COR 2 event [ms^-1]
+cor2_v:             Mean speed of selected candidate COR 2 event [kms^-1]
+cor2_vsigma:        Error in mean speed of selected candidate COR 2 event [kms^-1]
+cor2_vmin:          Minimum speed of selected candidate COR 2 event [kms^-1]
+cor2_vmax:          Maximum speed of selected candidate COR 2 event [kms^-1]
 cor2_type:          'CME' or 'Flow' as defined by the CACTUS catalogue      
 cor2_halo:          Halo events as defined by the CACTUS catalogue         
 fl_ts:              Search window start time to find corresponding flare event   
