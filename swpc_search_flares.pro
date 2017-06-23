@@ -35,64 +35,70 @@ function swpc_search_flares, $
 		endfor
 
 		noaa_dates = -1
-		; Check for CME location and search window - if no flare position then will not give result!
-		case cme_exist of
-			; If no COR2 event identified then use HI angle
-			0: begin
+		; Check for CME location and search window
+		; If no location only check time search window
+		if finite(noaa_list_hc(0)) eq 0. then begin
+			noaa_dates = where((anytim(noaa_list.stime) ge anytim(window_start)) and $
+													(anytim(noaa_list.stime) le anytim(window_end)))
+		endif else begin 
+			case cme_exist of
+				; If no COR2 event identified then use HI angle
+				0: begin
 					hi_pa = (hi_pan + hi_pas) / 2.
-				if (hi_pa GE 0. and hi_pa LT 180.) then begin
-					;TO DO: INLCUDE PEAK/END TIMES HERE!!!!! start OR peak OR end
-					if (hi_pa GE 0. and hi_pa LT 90.) then noaa_dates = where((anytim(noaa_list.stime) ge anytim(window_start)) and $
+					if (hi_pa GE 0. and hi_pa LT 180.) then begin
+						;TO DO: INLCUDE PEAK/END TIMES HERE!!!!! start OR peak OR end
+						if (hi_pa GE 0. and hi_pa LT 90.) then noaa_dates = where((anytim(noaa_list.stime) ge anytim(window_start)) and $
 																																			(anytim(noaa_list.stime) le anytim(window_end)) and $
 																																			(noaa_list_hc(1, *) LE hcx_range) and (noaa_list_hc(0, *) GE -hcy_range) and $
 																																			(noaa_list_hg(0, *) LE polar) and (noaa_list_hg(0, *) GE -polar))
-					if (hi_pa GE 90. and hi_pa LT 180.) then noaa_dates = where((anytim(noaa_list.stime) ge anytim(window_start)) and $
-																																			(anytim(noaa_list.stime) le anytim(window_end)) and $
-																																			(noaa_list_hc(1, *) LE hcx_range) and (noaa_list_hc(0, *) LE hcy_range) and $
-																																			(noaa_list_hg(0, *) LE polar) and (noaa_list_hg(0, *) GE -polar))
-				endif
-				if (hi_pa GE 180. and hi_pa LE 360.) then begin
-					if (hi_pa GE 180. and hi_pa LT 270.) then noaa_dates = where((anytim(noaa_list.stime) ge anytim(window_start)) and $
+						if (hi_pa GE 90. and hi_pa LT 180.) then noaa_dates = where((anytim(noaa_list.stime) ge anytim(window_start)) and $
 																																				(anytim(noaa_list.stime) le anytim(window_end)) and $
-																																				(noaa_list_hc(1, *) GE -hcx_range) and (noaa_list_hc(0, *) LE hcy_range) and $
-																																				(noaa_list_hg(0, *) LE polar)and (noaa_list_hg(0, *) GE -polar))
-					if (hi_pa GE 270. and hi_pa LT 360.) then noaa_dates = where((anytim(noaa_list.stime) ge anytim(window_start)) and $
-																																				(anytim(noaa_list.stime) le anytim(window_end)) and $
-																																				(noaa_list_hc(1, *) GE -hcx_range) and (noaa_list_hc(0, *) GE -hcy_range) and $
+																																				(noaa_list_hc(1, *) LE hcx_range) and (noaa_list_hc(0, *) LE hcy_range) and $
 																																				(noaa_list_hg(0, *) LE polar) and (noaa_list_hg(0, *) GE -polar))
-				endif
-			end
-			; Use position angle from CME identified by COR2
-			1: begin
-				; If theres a halo dont restrict the location
-				if (cor2_halo) EQ 'II' or (cor2_halo) EQ 'III' or (cor2_halo) EQ 'IV' then begin
-					noaa_dates = where((anytim(noaa_list.stime) ge anytim(window_start)) and $
-														(anytim(noaa_list.stime) le anytim(window_end)) and $
-														(noaa_list_hg(0, *) LE polar) and (noaa_list_hg(0, *) GE -polar))
-				endif else begin
-					if (cor2_pa GE 0. and cor2_pa LT 180.) then begin
-						if (cor2_pa GE 0. and cor2_pa LT 90.) then noaa_dates = where((anytim(noaa_list.stime) ge anytim(window_start)) and $
-																																																				(anytim(noaa_list.stime) le anytim(window_end)) and $
-																																																				(noaa_list_hc(1, *) LE hcx_range) and (noaa_list_hc(0, *) GE -hcy_range) and $
-																																																				(noaa_list_hg(0, *) LE polar) and (noaa_list_hg(0, *) GE -polar))
-						if (cor2_pa GE 90. and cor2_pa LT 180.) then noaa_dates = where((anytim(noaa_list.stime) ge anytim(window_start)) and $
-																																																					(anytim(noaa_list.stime) le anytim(window_end)) and $
-																																																					(noaa_list_hc(1, *) LE hcx_range) and (noaa_list_hc(0, *) LE hcy_range) and $
-																																																					(noaa_list_hg(0, *) LE polar) and (noaa_list_hg(0, *) GE -polar))
 					endif
-					if (cor2_pa GE 180. and cor2_pa LE 360.) then begin
-						if (cor2_pa GE 180. and cor2_pa LT 270.) then noaa_dates = where((anytim(noaa_list.stime) ge anytim(window_start)) and $
-																																																						(anytim(noaa_list.stime) le anytim(window_end)) and $
-																																																						(noaa_list_hc(1, *) GE -hcx_range) and (noaa_list_hc(0, *) LE hcy_range) and $
-																																																						(noaa_list_hg(0, *) LE polar) and (noaa_list_hg(0, *) GE -polar))
-						if (cor2_pa GE 270. and cor2_pa LT 360.) then noaa_dates = where((anytim(noaa_list.stime) ge anytim(window_start)) and $
-																																																						(anytim(noaa_list.stime) le anytim(window_end)) and $
-																																																						(noaa_list_hc(1, *) GE -hcx_range) and (noaa_list_hc(0, *) GE -hcy_range) and $
-																																																						(noaa_list_hg(0, *) LE polar) and (noaa_list_hg(0, *) GE -polar))
+					if (hi_pa GE 180. and hi_pa LE 360.) then begin
+						if (hi_pa GE 180. and hi_pa LT 270.) then noaa_dates = where((anytim(noaa_list.stime) ge anytim(window_start)) and $
+																																					(anytim(noaa_list.stime) le anytim(window_end)) and $
+																																					(noaa_list_hc(1, *) GE -hcx_range) and (noaa_list_hc(0, *) LE hcy_range) and $
+																																					(noaa_list_hg(0, *) LE polar)and (noaa_list_hg(0, *) GE -polar))
+						if (hi_pa GE 270. and hi_pa LT 360.) then noaa_dates = where((anytim(noaa_list.stime) ge anytim(window_start)) and $
+																																					(anytim(noaa_list.stime) le anytim(window_end)) and $
+																																					(noaa_list_hc(1, *) GE -hcx_range) and (noaa_list_hc(0, *) GE -hcy_range) and $
+																																					(noaa_list_hg(0, *) LE polar) and (noaa_list_hg(0, *) GE -polar))
 					endif
-				endelse
-			end
-		endcase
+				end
+				; Use position angle from CME identified by COR2
+				1: begin
+					; If theres a halo dont restrict the location
+					if (cor2_halo) EQ 'II' or (cor2_halo) EQ 'III' or (cor2_halo) EQ 'IV' then begin
+						noaa_dates = where((anytim(noaa_list.stime) ge anytim(window_start)) and $
+															(anytim(noaa_list.stime) le anytim(window_end)) and $
+															(noaa_list_hg(0, *) LE polar) and (noaa_list_hg(0, *) GE -polar))
+					endif else begin
+						if (cor2_pa GE 0. and cor2_pa LT 180.) then begin
+							if (cor2_pa GE 0. and cor2_pa LT 90.) then noaa_dates = where((anytim(noaa_list.stime) ge anytim(window_start)) and $
+																																						(anytim(noaa_list.stime) le anytim(window_end)) and $
+																																						(noaa_list_hc(1, *) LE hcx_range) and (noaa_list_hc(0, *) GE -hcy_range) and $
+																																						(noaa_list_hg(0, *) LE polar) and (noaa_list_hg(0, *) GE -polar))
+							if (cor2_pa GE 90. and cor2_pa LT 180.) then noaa_dates = where((anytim(noaa_list.stime) ge anytim(window_start)) and $
+																																							(anytim(noaa_list.stime) le anytim(window_end)) and $
+																																							(noaa_list_hc(1, *) LE hcx_range) and (noaa_list_hc(0, *) LE hcy_range) and $
+																																							(noaa_list_hg(0, *) LE polar) and (noaa_list_hg(0, *) GE -polar))
+						endif
+						if (cor2_pa GE 180. and cor2_pa LE 360.) then begin
+							if (cor2_pa GE 180. and cor2_pa LT 270.) then noaa_dates = where((anytim(noaa_list.stime) ge anytim(window_start)) and $
+																																								(anytim(noaa_list.stime) le anytim(window_end)) and $
+																																								(noaa_list_hc(1, *) GE -hcx_range) and (noaa_list_hc(0, *) LE hcy_range) and $
+																																								(noaa_list_hg(0, *) LE polar) and (noaa_list_hg(0, *) GE -polar))
+							if (cor2_pa GE 270. and cor2_pa LT 360.) then noaa_dates = where((anytim(noaa_list.stime) ge anytim(window_start)) and $
+																																								(anytim(noaa_list.stime) le anytim(window_end)) and $
+																																								(noaa_list_hc(1, *) GE -hcx_range) and (noaa_list_hc(0, *) GE -hcy_range) and $
+																																								(noaa_list_hg(0, *) LE polar) and (noaa_list_hg(0, *) GE -polar))
+						endif
+					endelse
+				end
+			endcase
+		endelse
 
 		if (noaa_dates(0) ne -1) then begin
 			; Search for X, then M, then C
