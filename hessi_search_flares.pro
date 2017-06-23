@@ -135,7 +135,7 @@ function hessi_search_flares, $
 			hessistr.fl_endtime = anytim(hessi_candidate.end_time, /vms)
 			hessistr.fl_peaktime = anytim(hessi_candidate.peak_time, /vms)
 			hessistr.fl_goes = STRTRIM(hessi_candidate.goes_class)
-			hessistr.fl_no = hessi_candidate.active_region
+			hessistr.srs_no = hessi_candidate.active_region
 			hessistr.fl_type = 'hessi'
 
 			; Get position coordinates for later use with NOAA SRS and running SMART
