@@ -173,7 +173,7 @@ function get_flarear_info, $
 		
 		; Output this info
 ;		if typename(hessistr) ne 'STRING' then begin
-        if hessistr.fl_starttime ne ' ' then begin
+		if hessistr.fl_starttime ne ' ' then begin
 			outstr.fl_type = hessistr.fl_type
 			outstr.fl_starttime = hessistr.fl_starttime
 			outstr.fl_endtime = hessistr.fl_endtime
@@ -191,19 +191,98 @@ function get_flarear_info, $
 	endif else begin
 		if outstr.fl_loc eq " " then begin
 			print, 'Getting location from HESSI'
-			hessistr = hessi_search_flares(window_start = outstr.fl_ts, window_end = outstr.fl_tf, $
-																	hi_pan = cme_properties.hi_pan, hi_pas = cme_properties.hi_pas, cor2_pa = cme_properties.cor2_pa, cor2_halo = cme_properties.cor2_halo, $
-																	flare = flare, cme_exist = cme_exist, $
-																	hcx_range = hcx_range, hcy_range = hcy_range)
-			outstr.fl_loc = hessistr.fl_loc
-			hgx = hessistr.hgx
-			hgy = hessistr.hgy
-			hcx = hessistr.hcx
-			hcy = hessistr.hcy
+			;Only grab location if there is an active region number
+			swpc_hessi_list = hsi_read_flarelist()
+			swpc_hessi_polar =  625.
+
+			case cme_exist of
+				0: begin
+				hi_pa = (cme_properties.hi_pan + cme_properties.hi_pas) / 2.
+					if (hi_pa GE 0. and hi_pa LT 180.) then begin
+						if (hi_pa GE 0. and hi_pa LT 90.) then swpc_hessi_dates = where((swpc_hessi_list.peak_time ge anytim(outstr.fl_ts)) and $
+																																						(swpc_hessi_list.peak_time le anytim(outstr.fl_tf)) and $
+																																						(swpc_hessi_list.sflag1 eq 1.) and (swpc_hessi_list.flags[17] eq 1.) and (swpc_hessi_list.flags[16] le 4.) and $
+																																						(swpc_hessi_list.x_position LE hcx_range) and (swpc_hessi_list.y_position GE -hcy_range) and $
+																																						(swpc_hessi_list.y_position LE swpc_hessi_polar) and (swpc_hessi_list.y_position GE -swpc_hessi_polar) and $
+																																						(swpc_hessi_list.active_region eq outstr.srs_no))
+						if (hi_pa GE 90. and hi_pa LT 180.) then swpc_hessi_dates = where((swpc_hessi_list.peak_time ge anytim(outstr.fl_ts)) and $
+																																							(swpc_hessi_list.peak_time le anytim(outstr.fl_tf)) and $
+																																							(swpc_hessi_list.sflag1 eq 1.) and (swpc_hessi_list.flags[17] eq 1.) and (swpc_hessi_list.flags[16] le 4.) and $
+																																							(swpc_hessi_list.x_position LE hcx_range) and (swpc_hessi_list.y_position LE hcy_range) and $
+																																							(swpc_hessi_list.y_position LE swpc_hessi_polar) and (swpc_hessi_list.y_position GE -swpc_hessi_polar) and $
+																																							(swpc_hessi_list.active_region eq outstr.srs_no))
+					endif
+					if (hi_pa GE 180. and hi_pa LE 360.) then begin
+						if (hi_pa GE 180. and hi_pa LT 270.) then swpc_hessi_dates = where((swpc_hessi_list.peak_time ge anytim(outstr.fl_ts)) and $
+																																							(swpc_hessi_list.peak_time le anytim(outstr.fl_tf)) and $
+																																							(swpc_hessi_list.sflag1 eq 1.) and (swpc_hessi_list.flags[17] eq 1.) and (swpc_hessi_list.flags[16] le 4.) and $
+																																							(swpc_hessi_list.x_position GE -hcx_range) and (swpc_hessi_list.y_position LE hcy_range) and $
+																																							(swpc_hessi_list.y_position LE swpc_hessi_polar) and (swpc_hessi_list.y_position GE -swpc_hessi_polar) and $
+																																							(swpc_hessi_list.active_region eq outstr.srs_no))
+						if (hi_pa GE 270. and hi_pa LT 360.) then swpc_hessi_dates = where((swpc_hessi_list.peak_time ge anytim(outstr.fl_ts)) and $
+																																							(swpc_hessi_list.peak_time le anytim(outstr.fl_tf)) and $
+																																							(swpc_hessi_list.sflag1 eq 1.) and (swpc_hessi_list.flags[17] eq 1.) and (swpc_hessi_list.flags[16] le 4.) and $
+																																							(swpc_hessi_list.x_position GE -hcx_range) and (swpc_hessi_list.y_position GE -hcy_range) and $
+																																							(swpc_hessi_list.y_position LE swpc_hessi_polar) and (swpc_hessi_list.y_position GE -swpc_hessi_polar) and $
+																																							(swpc_hessi_list.active_region eq outstr.srs_no))
+					endif
+				end
+				1: begin
+					if (cme_properties.cor2_halo) EQ 'II' or (cme_properties.cor2_halo) EQ 'III' or (cme_properties.cor2_halo) EQ 'IV' then begin
+						swpc_hessi_dates = where((swpc_hessi_list.peak_time ge anytim(outstr.fl_ts)) and $
+																			(swpc_hessi_list.peak_time le anytim(outstr.fl_tf)) and $
+																			(swpc_hessi_list.sflag1 eq 1.) and (swpc_hessi_list.flags[17] eq 1.) and (swpc_hessi_list.flags[16] le 4.) and $
+																			(swpc_hessi_list.y_position LE swpc_hessi_polar) and (swpc_hessi_list.y_position GE -swpc_hessi_polar) and $
+																			(swpc_hessi_list.active_region eq outstr.srs_no))
+					endif else begin
+						if (cme_properties.cor2_pa GE 0. and cme_properties.cor2_pa LT 180.) then begin
+							if (cme_properties.cor2_pa GE 0. and cme_properties.cor2_pa LT 90.) then swpc_hessi_dates = where((swpc_hessi_list.peak_time ge anytim(outstr.fl_ts)) and $
+																																																								(swpc_hessi_list.peak_time le anytim(outstr.fl_tf)) and $
+																																																								(swpc_hessi_list.sflag1 eq 1.) and (swpc_hessi_list.flags[17] eq 1.) and (swpc_hessi_list.flags[16] le 4.) and $
+																																																								(swpc_hessi_list.x_position LE hcx_range) and (swpc_hessi_list.y_position GE -hcy_range) and $
+																																																								(swpc_hessi_list.y_position LE swpc_hessi_polar) and (swpc_hessi_list.y_position GE -swpc_hessi_polar) and $
+																																																								(swpc_hessi_list.active_region eq outstr.srs_no))
+							if (cme_properties.cor2_pa GE 90. and cme_properties.cor2_pa LT 180.) then swpc_hessi_dates = where((swpc_hessi_list.peak_time ge anytim(outstr.fl_ts)) and $
+																																																								(swpc_hessi_list.peak_time le anytim(outstr.fl_tf)) and $
+																																																								(swpc_hessi_list.sflag1 eq 1.) and (swpc_hessi_list.flags[17] eq 1.) and (swpc_hessi_list.flags[16] le 4.) and $
+																																																								(swpc_hessi_list.x_position LE hcx_range) and (swpc_hessi_list.y_position LE hcy_range) and $
+																																																								(swpc_hessi_list.y_position LE swpc_hessi_polar) and (swpc_hessi_list.y_position GE -swpc_hessi_polar) and $
+																																																								(swpc_hessi_list.active_region eq outstr.srs_no))
+						endif
+						if (cme_properties.cor2_pa GE 180. and cme_properties.cor2_pa LE 360.) then begin
+							if (cme_properties.cor2_pa GE 180. and cme_properties.cor2_pa LT 270.) then swpc_hessi_dates = where((swpc_hessi_list.peak_time ge anytim(outstr.fl_ts)) and $
+																																																								(swpc_hessi_list.peak_time le anytim(outstr.fl_tf)) and $
+																																																								(swpc_hessi_list.sflag1 eq 1.) and (swpc_hessi_list.flags[17] eq 1.) and (swpc_hessi_list.flags[16] le 4.) and $
+																																																								(swpc_hessi_list.x_position GE -hcx_range) and (swpc_hessi_list.y_position LE hcy_range) and $
+																																																								(swpc_hessi_list.y_position LE swpc_hessi_polar) and (swpc_hessi_list.y_position GE -swpc_hessi_polar) and $
+																																																								(swpc_hessi_list.active_region eq outstr.srs_no))
+							if (cme_properties.cor2_pa GE 270. and cme_properties.cor2_pa LT 360.) then swpc_hessi_dates = where((swpc_hessi_list.peak_time ge anytim(outstr.fl_ts)) and $
+																																																								(swpc_hessi_list.peak_time le anytim(outstr.fl_tf)) and $
+																																																								(swpc_hessi_list.sflag1 eq 1.) and (swpc_hessi_list.flags[17] eq 1.) and (swpc_hessi_list.flags[16] le 4.) and $
+																																																								(swpc_hessi_list.x_position GE -hcx_range) and (swpc_hessi_list.y_position GE -hcy_range) and $
+																																																								(swpc_hessi_list.y_position LE swpc_hessi_polar) and (swpc_hessi_list.y_position GE -swpc_hessi_polar) and $
+																																																								(swpc_hessi_list.active_region eq outstr.srs_no))
+						endif
+					endelse
+				end
+			endcase
+
+			if swpc_hessi_dates(0) ne -1 then begin
+				swpc_hessi_index = closest(anytim(swpc_hessi_list(swpc_hessi_dates).start_time), anytim(outstr.fl_ts))
+				swpc_hessi_candidate = (swpc_hessi_list(swpc_hessi_dates(swpc_hessi_index)))
+				if swpc_hessi_candidate.x_position ne 0. then begin
+					hcx = swpc_hessi_candidate.x_position
+					hcy = swpc_hessi_candidate.y_position
+					hc2hg, hcx, hcy, hgx, hgy, date = anytim(swpc_hessi_candidate.peak_time, /vms)
+					flarelocstring = locint2string(latitude=hgy, longitude=hgx)
+					outstr.fl_loc = flarelocstring
+				endif
+			endif 
+
 		endif else begin
 			print, 'Skipping HESSI'
 		endelse
-		
+
 	endelse
 ; 
 	; --------------------------------------------------------------------------------------------------------------------------------------------
