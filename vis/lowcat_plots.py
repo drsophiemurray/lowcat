@@ -12,7 +12,7 @@ Notes:
 
 '''
 
-CAT_FOLDER = '/home/somurray/Dropbox/lowcat/results/'
+CAT_FOLDER = '/Users/sophie/GitHub/lowcat/data/'
 JSON_FILE = 'lowcat.json'
 SAV_FILE = 'lowcat.sav' #outstr and cmelist
 
@@ -89,16 +89,27 @@ def main():
     ##already made so commenting out
     # srs_area_complexity(df=df)
 
-    #plot goes flux and wlsg halo
-    plotly_double(x1data = np.log10(df['FL_GOES'].astype('float64')),  x1title = 'GOES Flux [Wm-2]',
-                  x2data = df['SMART_WLSG'].astype('float64'), x2title='WLsg [G/Mm]',
-                  y1data = df['COR2_V'], y1title = 'CME Speed [ms<sup>-1</sup>]',
-                  y1range = [0, 2000],
-                  weightdata = '10',
-                  colourdata = df['COR2_WIDTH'].astype('float64'), colourdata_title='CME width [<sup>o</sup>]',
-                  colourdata_max=360, colourdata_min=0, colourdata_step=45,
-                  filedata = 'halo_cme_properties',
-                  colourscale = 'Viridis')
+    # cme speed vs width
+    # plotly_double(x1data = np.log10(df['COR2_WIDTH'].astype('float64')),  x1title = 'CME Width',
+    #               x2data = df['COR2_WIDTH'].astype('float64'), x2title='CME Width',
+    #               y1data = df['COR2_V'], y1title = 'CME Speed [ms<sup>-1</sup>]',
+    #               y1range = [0, 2000],
+    #               weightdata = '10',
+    #               colourdata = df['COR2_PA'].astype('float64'), colourdata_title='CME PA [<sup>o</sup>]',
+    #               colourdata_max=0, colourdata_min=360, colourdata_step=45,
+    #               filedata = 'cme-plots',
+    #               colourscale = 'Viridis')
+
+    ##plot goes flux and wlsg halo
+    # plotly_double(x1data = np.log10(df['FL_GOES'].astype('float64')),  x1title = 'GOES Flux [Wm-2]',
+    #               x2data = df['SMART_WLSG'].astype('float64'), x2title='WLsg [G/Mm]',
+    #               y1data = df['COR2_V'], y1title = 'CME Speed [ms<sup>-1</sup>]',
+    #               y1range = [0, 2000],
+    #               weightdata = '10',
+    #               colourdata = df['COR2_WIDTH'].astype('float64'), colourdata_title='CME width [<sup>o</sup>]',
+    #               colourdata_max=360, colourdata_min=0, colourdata_step=45,
+    #               filedata = 'halo_cme_properties',
+    #               colourscale = 'Viridis')
 
 
     ##already made so commenting out
@@ -106,14 +117,14 @@ def main():
     #              x2data = np.log10(df['SMART_BMAX'].astype('float64')), x2title = 'Bmax [G]',
     #              x3data = np.log10(df['SMART_TOTAREA'].astype('float64')), x3title='Total area [m.s.h]',
     #              x4data = np.log10(df['SMART_TOTFLX'].astype('float64')), x4title='Total flux [Mx]',
-    #              x5data = df['SMART_RVALUE'].astype('float64'), x5title='R value [Mx]',
-    #              x6data = df['SMART_WLSG'].astype('float64'), x6title='WLsg [G/Mm]',
+    #              x5data = np.log10(df['SMART_PSLLEN'].astype('float64')), x5title='PSL length [Mm]',
+    #              x6data = df['SMART_RVALUE'].astype('float64'), x6title='R value [Mx]',
     #              y1data = df['COR2_V'], y1title = 'CME Speed [kms<sup>-1</sup>]',
     #              y1range = [0, 2000],
     #              weightdata = '10',
     #              colourdata = np.log10(df['FL_GOES'].astype('float64')), colourdata_title = 'GOES Flux [Wm-2]',
     #              colourdata_max = -3, colourdata_min = -7, colourdata_step = 1,
-    #              filedata = 'smart_properties_paper',
+    #              filedata = 'smart_properties_cmespeed',
     #              colourscale=[[0, 'rgb(54,50,153)'],
     #                           [0.25, 'rgb(54,50,153)'],
     #                           [0.25, 'rgb(17,123,215)'],
@@ -123,6 +134,52 @@ def main():
     #                           [0.75, 'rgb(249,210,41)'],
     #                           [1.0, 'rgb(249,210,41)']]
     #              )
+
+    #to get this working had to open in tableau, choose ones I wanted, save as csv, open in excel then save as csv again comma separated options
+    csvdata = pd.read_csv(CAT_FOLDER+'flarecast_data_comma.csv')
+
+    # already made so commenting out
+    # plotly_multi(x1data = np.log10(csvdata['total (FC data.sharp kw.usiz)'].astype('float64')),  x1title = 'SHARP Total USIZ',
+    #              x2data = np.log10(csvdata['Value Int'].astype('float64')), x2title = 'Br WLSG',
+    #              x3data = csvdata['R Value Br Logr'].astype('float64'), x3title='Br R value',
+    #              x4data = np.log10(csvdata['total (FC data.sharp kw.usflux)'].astype('float64')), x4title='SHARP Total USFLUX',
+    #              x5data = np.log10(csvdata['total (FC data.sharp kw.ushz)'].astype('float64')), x5title='SHARP Total USHZ',
+    #              x6data = np.log10(csvdata['Ising Energy'].astype('float64')), x6title='Blos Ising Energy',
+    #              y1data = csvdata['Cor2 V'], y1title = 'CME Speed [kms<sup>-1</sup>]',
+    #              y1range = [0, 2000],
+    #              weightdata = '10',
+    #              colourdata = csvdata['Cor2 Width'].astype('float64'), colourdata_title='CME width [<sup>o</sup>]',
+    #              colourdata_max=360, colourdata_min=0, colourdata_step=45,
+    #              filedata = 'flarecast_top_properties_halo',
+    #              colourscale = 'Viridis'
+    #              )
+
+    #convert the goes strings to numbers
+    csvdata["Fl Goes"].loc[(csvdata["Fl Goes"].isnull())] = ' '
+    for i in range(len(csvdata["Fl Goes"])):
+        csvdata["Fl Goes"][i] = goes_string2mag(csvdata["Fl Goes"][i])
+
+    plotly_multi(x1data = np.log10(csvdata['total (FC data.sharp kw.usiz)'].astype('float64')),  x1title = 'SHARP Total USIZ',
+                 x2data = np.log10(csvdata['Value Int'].astype('float64')), x2title = 'Br WLSG',
+                 x3data = csvdata['R Value Br Logr'].astype('float64'), x3title='Br R value',
+                 x4data = np.log10(csvdata['total (FC data.sharp kw.usflux)'].astype('float64')), x4title='SHARP Total USFLUX',
+                 x5data = np.log10(csvdata['total (FC data.sharp kw.ushz)'].astype('float64')), x5title='SHARP Total USHZ',
+                 x6data = np.log10(csvdata['Ising Energy'].astype('float64')), x6title='Blos Ising Energy',
+                 y1data = csvdata['Cor2 V'], y1title = 'CME Speed [kms<sup>-1</sup>]',
+                 y1range = [0, 2000],
+                 weightdata = '10',
+                 colourdata = np.log10(csvdata['Fl Goes'].astype('float64')), colourdata_title = 'GOES Flux [Wm-2]',
+                 colourdata_max = -3, colourdata_min = -7, colourdata_step = 1,
+                 filedata = 'flarecast_top_properties_goes',
+                 colourscale=[[0, 'rgb(54,50,153)'],
+                              [0.25, 'rgb(54,50,153)'],
+                              [0.25, 'rgb(17,123,215)'],
+                              [0.5, 'rgb(17,123,215)'],
+                              [0.5, 'rgb(37,180,167)'],
+                              [0.75, 'rgb(37,180,167)'],
+                              [0.75, 'rgb(249,210,41)'],
+                              [1.0, 'rgb(249,210,41)']]
+                 )
 
 def srs_area_complexity(df):
     """
