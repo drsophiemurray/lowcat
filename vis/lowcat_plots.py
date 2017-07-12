@@ -32,39 +32,6 @@ mpl.rc('font', size = 10, family = 'serif', weight='normal')
 mpl.rc('legend', fontsize = 8)
 mpl.rc('lines', linewidth = 1.5)
 
-cm_data = [[0.2081, 0.1663, 0.5292], [0.2116238095, 0.1897809524, 0.5776761905],
-           [0.212252381, 0.2137714286, 0.6269714286], [0.2081, 0.2386, 0.6770857143],
-           [0.1959047619, 0.2644571429, 0.7279], [0.1707285714, 0.2919380952, 0.779247619],
-           [0.1252714286, 0.3242428571, 0.8302714286], [0.0591333333, 0.3598333333, 0.8683333333],
-           [0.0116952381, 0.3875095238, 0.8819571429], [0.0059571429, 0.4086142857, 0.8828428571],
-           [0.0165142857, 0.4266, 0.8786333333], [0.032852381, 0.4430428571, 0.8719571429],
-           [0.0498142857, 0.4585714286, 0.8640571429], [0.0629333333, 0.4736904762, 0.8554380952],
-           [0.0722666667, 0.4886666667, 0.8467], [0.0779428571, 0.5039857143, 0.8383714286],
-           [0.079347619, 0.5200238095, 0.8311809524], [0.0749428571, 0.5375428571, 0.8262714286],
-           [0.0640571429, 0.5569857143, 0.8239571429], [0.0487714286, 0.5772238095, 0.8228285714],
-           [0.0343428571, 0.5965809524, 0.819852381], [0.0265, 0.6137, 0.8135],
-           [0.0238904762, 0.6286619048, 0.8037619048], [0.0230904762, 0.6417857143, 0.7912666667],
-           [0.0227714286, 0.6534857143, 0.7767571429], [0.0266619048, 0.6641952381, 0.7607190476],
-           [0.0383714286, 0.6742714286, 0.743552381], [0.0589714286, 0.6837571429, 0.7253857143],
-           [0.0843, 0.6928333333, 0.7061666667], [0.1132952381, 0.7015, 0.6858571429],
-           [0.1452714286, 0.7097571429, 0.6646285714], [0.1801333333, 0.7176571429, 0.6424333333],
-           [0.2178285714, 0.7250428571, 0.6192619048], [0.2586428571, 0.7317142857, 0.5954285714],
-           [0.3021714286, 0.7376047619, 0.5711857143], [0.3481666667, 0.7424333333, 0.5472666667],
-           [0.3952571429, 0.7459, 0.5244428571], [0.4420095238, 0.7480809524, 0.5033142857],
-           [0.4871238095, 0.7490619048, 0.4839761905], [0.5300285714, 0.7491142857, 0.4661142857],
-           [0.5708571429, 0.7485190476, 0.4493904762], [0.609852381, 0.7473142857, 0.4336857143],
-           [0.6473, 0.7456, 0.4188], [0.6834190476, 0.7434761905, 0.4044333333],
-           [0.7184095238, 0.7411333333, 0.3904761905], [0.7524857143, 0.7384, 0.3768142857],
-           [0.7858428571, 0.7355666667, 0.3632714286], [0.8185047619, 0.7327333333, 0.3497904762],
-           [0.8506571429, 0.7299, 0.3360285714], [0.8824333333, 0.7274333333, 0.3217],
-           [0.9139333333, 0.7257857143, 0.3062761905], [0.9449571429, 0.7261142857, 0.2886428571],
-           [0.9738952381, 0.7313952381, 0.266647619], [0.9937714286, 0.7454571429, 0.240347619],
-           [0.9990428571, 0.7653142857, 0.2164142857], [0.9955333333, 0.7860571429, 0.196652381],
-           [0.988, 0.8066, 0.1793666667], [0.9788571429, 0.8271428571, 0.1633142857],
-           [0.9697, 0.8481380952, 0.147452381], [0.9625857143, 0.8705142857, 0.1309],
-           [0.9588714286, 0.8949, 0.1132428571], [0.9598238095, 0.9218333333, 0.0948380952],
-           [0.9661, 0.9514428571, 0.0755333333], [0.9763, 0.9831, 0.0538]]
-
 
 def main():
     """Loads the LOWCAT catalogue, 
@@ -80,79 +47,72 @@ def main():
     # Calculate flare duration
     df['FL_DURATION'] = calculate_flare_duration(df['FL_STARTTIME'], df['FL_ENDTIME'])
 
-    # messed with pandas and realised didnt have python 3
-    # plt.figure()
-    # ax1 = df.plot.scatter(x='SMART_RVALUE', y='COR2_V', c='COR2_WIDTH')
-    # ax = df.plot.scatter(x='SMART_RVALUE', y='COR2_V', c='DarkBlue', label='B')
-    # df.plot.scatter(x='SMART_RVALUE', y='COR2_V', c='DarkGreen', label='C', ax=ax)
-
-    ##already made so commenting out
-    # srs_area_complexity(df=df)
+    #sammis tang plot
+    srs_area_complexity(df=df)
 
     # cme speed vs width
-    # plotly_double(x1data = np.log10(df['COR2_WIDTH'].astype('float64')),  x1title = 'CME Width',
-    #               x2data = df['COR2_WIDTH'].astype('float64'), x2title='CME Width',
-    #               y1data = df['COR2_V'], y1title = 'CME Speed [ms<sup>-1</sup>]',
-    #               y1range = [0, 2000],
-    #               weightdata = '10',
-    #               colourdata = df['COR2_PA'].astype('float64'), colourdata_title='CME PA [<sup>o</sup>]',
-    #               colourdata_max=0, colourdata_min=360, colourdata_step=45,
-    #               filedata = 'cme-plots',
-    #               colourscale = 'Viridis')
+    plotly_double(x1data = np.log10(df['COR2_WIDTH'].astype('float64')),  x1title = 'CME Width',
+                  x2data = df['COR2_WIDTH'].astype('float64'), x2title='CME Width',
+                  y1data = df['COR2_V'], y1title = 'CME Speed [ms<sup>-1</sup>]',
+                  y1range = [0, 2000],
+                  weightdata = '10',
+                  colourdata = df['COR2_PA'].astype('float64'), colourdata_title='CME PA [<sup>o</sup>]',
+                  colourdata_max=0, colourdata_min=360, colourdata_step=45,
+                  filedata = 'cme-plots',
+                  colourscale = 'Viridis')
 
-    ##plot goes flux and wlsg halo
-    # plotly_double(x1data = np.log10(df['FL_GOES'].astype('float64')),  x1title = 'GOES Flux [Wm-2]',
-    #               x2data = df['SMART_WLSG'].astype('float64'), x2title='WLsg [G/Mm]',
-    #               y1data = df['COR2_V'], y1title = 'CME Speed [ms<sup>-1</sup>]',
-    #               y1range = [0, 2000],
-    #               weightdata = '10',
-    #               colourdata = df['COR2_WIDTH'].astype('float64'), colourdata_title='CME width [<sup>o</sup>]',
-    #               colourdata_max=360, colourdata_min=0, colourdata_step=45,
-    #               filedata = 'halo_cme_properties',
-    #               colourscale = 'Viridis')
+    # plot goes flux and wlsg halo
+    plotly_double(x1data = np.log10(df['FL_GOES'].astype('float64')),  x1title = 'GOES Flux [Wm-2]',
+                  x2data = df['SMART_WLSG'].astype('float64'), x2title='WLsg [G/Mm]',
+                  y1data = df['COR2_V'], y1title = 'CME Speed [ms<sup>-1</sup>]',
+                  y1range = [0, 2000],
+                  weightdata = '10',
+                  colourdata = df['COR2_WIDTH'].astype('float64'), colourdata_title='CME width [<sup>o</sup>]',
+                  colourdata_max=360, colourdata_min=0, colourdata_step=45,
+                  filedata = 'halo_cme_properties',
+                  colourscale = 'Viridis')
 
-
-    ##already made so commenting out
-    # plotly_multi(x1data = np.log10(np.abs(df['SMART_BMIN'].astype('float64'))),  x1title = 'Bmin [G]',
-    #              x2data = np.log10(df['SMART_BMAX'].astype('float64')), x2title = 'Bmax [G]',
-    #              x3data = np.log10(df['SMART_TOTAREA'].astype('float64')), x3title='Total area [m.s.h]',
-    #              x4data = np.log10(df['SMART_TOTFLX'].astype('float64')), x4title='Total flux [Mx]',
-    #              x5data = np.log10(df['SMART_PSLLEN'].astype('float64')), x5title='PSL length [Mm]',
-    #              x6data = df['SMART_RVALUE'].astype('float64'), x6title='R value [Mx]',
-    #              y1data = df['COR2_V'], y1title = 'CME Speed [kms<sup>-1</sup>]',
-    #              y1range = [0, 2000],
-    #              weightdata = '10',
-    #              colourdata = np.log10(df['FL_GOES'].astype('float64')), colourdata_title = 'GOES Flux [Wm-2]',
-    #              colourdata_max = -3, colourdata_min = -7, colourdata_step = 1,
-    #              filedata = 'smart_properties_cmespeed',
-    #              colourscale=[[0, 'rgb(54,50,153)'],
-    #                           [0.25, 'rgb(54,50,153)'],
-    #                           [0.25, 'rgb(17,123,215)'],
-    #                           [0.5, 'rgb(17,123,215)'],
-    #                           [0.5, 'rgb(37,180,167)'],
-    #                           [0.75, 'rgb(37,180,167)'],
-    #                           [0.75, 'rgb(249,210,41)'],
-    #                           [1.0, 'rgb(249,210,41)']]
-    #              )
+    # now with the goes colour bar
+    plotly_multi(x1data = np.log10(np.abs(df['SMART_BMIN'].astype('float64'))),  x1title = 'Bmin [G]',
+                 x2data = np.log10(df['SMART_BMAX'].astype('float64')), x2title = 'Bmax [G]',
+                 x3data = np.log10(df['SMART_TOTAREA'].astype('float64')), x3title='Total area [m.s.h]',
+                 x4data = np.log10(df['SMART_TOTFLX'].astype('float64')), x4title='Total flux [Mx]',
+                 x5data = np.log10(df['SMART_PSLLEN'].astype('float64')), x5title='PSL length [Mm]',
+                 x6data = df['SMART_RVALUE'].astype('float64'), x6title='R value [Mx]',
+                 y1data = df['COR2_V'], y1title = 'CME Speed [kms<sup>-1</sup>]',
+                 y1range = [0, 2000],
+                 weightdata = '10',
+                 colourdata = np.log10(df['FL_GOES'].astype('float64')), colourdata_title = 'GOES Flux [Wm-2]',
+                 colourdata_max = -3, colourdata_min = -7, colourdata_step = 1,
+                 filedata = 'smart_properties_cmespeed',
+                 colourscale=[[0, 'rgb(54,50,153)'],
+                              [0.25, 'rgb(54,50,153)'],
+                              [0.25, 'rgb(17,123,215)'],
+                              [0.5, 'rgb(17,123,215)'],
+                              [0.5, 'rgb(37,180,167)'],
+                              [0.75, 'rgb(37,180,167)'],
+                              [0.75, 'rgb(249,210,41)'],
+                              [1.0, 'rgb(249,210,41)']]
+                 )
 
     #to get this working had to open in tableau, choose ones I wanted, save as csv, open in excel then save as csv again comma separated options
     csvdata = pd.read_csv(CAT_FOLDER+'flarecast_data_comma.csv')
 
-    # already made so commenting out
-    # plotly_multi(x1data = np.log10(csvdata['total (FC data.sharp kw.usiz)'].astype('float64')),  x1title = 'SHARP Total USIZ',
-    #              x2data = np.log10(csvdata['Value Int'].astype('float64')), x2title = 'Br WLSG',
-    #              x3data = csvdata['R Value Br Logr'].astype('float64'), x3title='Br R value',
-    #              x4data = np.log10(csvdata['total (FC data.sharp kw.usflux)'].astype('float64')), x4title='SHARP Total USFLUX',
-    #              x5data = np.log10(csvdata['total (FC data.sharp kw.ushz)'].astype('float64')), x5title='SHARP Total USHZ',
-    #              x6data = np.log10(csvdata['Ising Energy'].astype('float64')), x6title='Blos Ising Energy',
-    #              y1data = csvdata['Cor2 V'], y1title = 'CME Speed [kms<sup>-1</sup>]',
-    #              y1range = [0, 2000],
-    #              weightdata = '10',
-    #              colourdata = csvdata['Cor2 Width'].astype('float64'), colourdata_title='CME width [<sup>o</sup>]',
-    #              colourdata_max=360, colourdata_min=0, colourdata_step=45,
-    #              filedata = 'flarecast_top_properties_halo',
-    #              colourscale = 'Viridis'
-    #              )
+    # flarecast halo
+    plotly_multi(x1data = np.log10(csvdata['total (FC data.sharp kw.usiz)'].astype('float64')),  x1title = 'SHARP Total USIZ',
+                 x2data = np.log10(csvdata['Value Int'].astype('float64')), x2title = 'Br WLSG',
+                 x3data = csvdata['R Value Br Logr'].astype('float64'), x3title='Br R value',
+                 x4data = np.log10(csvdata['total (FC data.sharp kw.usflux)'].astype('float64')), x4title='SHARP Total USFLUX',
+                 x5data = np.log10(csvdata['total (FC data.sharp kw.ushz)'].astype('float64')), x5title='SHARP Total USHZ',
+                 x6data = np.log10(csvdata['Ising Energy'].astype('float64')), x6title='Blos Ising Energy',
+                 y1data = csvdata['Cor2 V'], y1title = 'CME Speed [kms<sup>-1</sup>]',
+                 y1range = [0, 2000],
+                 weightdata = '10',
+                 colourdata = csvdata['Cor2 Width'].astype('float64'), colourdata_title='CME width [<sup>o</sup>]',
+                 colourdata_max=360, colourdata_min=0, colourdata_step=45,
+                 filedata = 'flarecast_top_properties_halo',
+                 colourscale = 'Viridis'
+                 )
 
     #convert the goes strings to numbers
     csvdata["Fl Goes"].loc[(csvdata["Fl Goes"].isnull())] = ' '
@@ -180,6 +140,7 @@ def main():
                               [0.75, 'rgb(249,210,41)'],
                               [1.0, 'rgb(249,210,41)']]
                  )
+
 
 def srs_area_complexity(df):
     """
@@ -225,476 +186,6 @@ def srs_area_complexity(df):
                (r'$\alpha$', r'$\beta$', r'$\beta\gamma$', r'$\beta\delta$', r'$\beta\gamma\delta$'))
 
     fig.savefig('goes_srs_area.eps', format='eps', dpi=1200)
-
-
-def flux_area_complexity(df):
-    """
-    
-    :return: 
-    """
-
-    sizecircle = 16
-
-    # alpha = df['SRS_HALE'].loc[df["SRS_HALE"] == 'Alpha']
-    # beta = df['SRS_HALE'].loc[df["SRS_HALE"] == 'Beta']
-    # beta-gamma = df['SRS_HALE'].loc[df["SRS_HALE"] == 'Beta-Gamma']
-    # beta-delta = df['SRS_HALE'].loc[df["SRS_HALE"] == 'Beta-Delta']
-    # beta-gamma-delta = df['SRS_HALE'].loc[df["SRS_HALE"] == 'Beta-Gamma-Delta']
-
-    fig, (ax1, ax2) = plt.subplots(1,2, sharey=True)
-
-    fig.subplots_adjust(left = 0.1, right = 0.95, bottom = 0.1, top = 0.5, wspace = 0.2, hspace = 0.65)
-
-    alpha=ax1.scatter(x=np.log10((df['SMART_TOTAREA'].loc[df["SRS_HALE"] == 'Alpha']).astype('float64')),
-                y=np.log10((df['FL_GOES'].loc[df["SRS_HALE"] == 'Alpha']).astype('float64')),
-                            s=sizecircle, c='black',
-                            lw = 0)
-    beta=ax1.scatter(x=np.log10((df['SMART_TOTAREA'].loc[df["SRS_HALE"] == 'Beta']).astype('float64')),
-                y=np.log10((df['FL_GOES'].loc[df["SRS_HALE"] == 'Beta']).astype('float64')),
-                            s=sizecircle, c='darkblue',
-                            lw = 0)
-    bg=ax1.scatter(x=np.log10((df['SMART_TOTAREA'].loc[df["SRS_HALE"] == 'Beta-Gamma']).astype('float64')),
-                y=np.log10((df['FL_GOES'].loc[df["SRS_HALE"] == 'Beta-Gamma']).astype('float64')),
-                            s=sizecircle, c='dodgerblue',
-                            lw = 0)
-    bd=ax1.scatter(x=np.log10((df['SMART_TOTAREA'].loc[df["SRS_HALE"] == 'Beta-Delta']).astype('float64')),
-                y=np.log10((df['FL_GOES'].loc[df["SRS_HALE"] == 'Beta-Delta']).astype('float64')),
-                            s=sizecircle, c='darkcyan',
-                            lw = 0)
-    bgd=ax1.scatter(x=np.log10((df['SMART_TOTAREA'].loc[df["SRS_HALE"] == 'Beta-Gamma-Delta']).astype('float64')),
-                y=np.log10((df['FL_GOES'].loc[df["SRS_HALE"] == 'Beta-Gamma-Delta']).astype('float64')),
-                            s=sizecircle, c='y',
-                            lw = 0)
-    ax1.set_xlabel(r'log10 SMART Total Area [m.s.h]')
-    ax1.set_ylabel(r'log10 GOES Flux [Wm$^{-2}$]')
-    ax1.legend((alpha,beta,bg,bd,bgd),(r'$\alpha$',r'$\beta$',r'$\beta\gamma$',r'$\beta\delta$',r'$\beta\gamma\delta$'))
-    ax1.set_xlim([1, 4])
-    ax1.set_ylim([-8, -2])
-
-    ax2.scatter(x=np.log10((df['SRS_AREA'].loc[df["SRS_HALE"] == 'Alpha']).astype('float64')),
-                y=np.log10((df['FL_GOES'].loc[df["SRS_HALE"] == 'Alpha']).astype('float64')),
-                            s=sizecircle, c='black',
-                            lw = 0)
-    ax2.scatter(x=np.log10((df['SRS_AREA'].loc[df["SRS_HALE"] == 'Beta']).astype('float64')),
-                y=np.log10((df['FL_GOES'].loc[df["SRS_HALE"] == 'Beta']).astype('float64')),
-                            s=sizecircle, c='darkblue',
-                            lw = 0)
-    ax2.scatter(x=np.log10((df['SRS_AREA'].loc[df["SRS_HALE"] == 'Beta-Gamma']).astype('float64')),
-                y=np.log10((df['FL_GOES'].loc[df["SRS_HALE"] == 'Beta-Gamma']).astype('float64')),
-                            s=sizecircle, c='dodgerblue',
-                            lw = 0)
-    ax2.scatter(x=np.log10((df['SRS_AREA'].loc[df["SRS_HALE"] == 'Beta-Delta']).astype('float64')),
-                y=np.log10((df['FL_GOES'].loc[df["SRS_HALE"] == 'Beta-Delta']).astype('float64')),
-                            s=sizecircle, c='darkcyan',
-                            lw = 0)
-    ax2.scatter(x=np.log10((df['SRS_AREA'].loc[df["SRS_HALE"] == 'Beta-Gamma-Delta']).astype('float64')),
-                y=np.log10((df['FL_GOES'].loc[df["SRS_HALE"] == 'Beta-Gamma-Delta']).astype('float64')),
-                            s=sizecircle, c='y',
-                            lw = 0)
-    ax2.set_xlabel(r'log10 SRS Area [m.s.h]')
-    ax2.set_xlim([0, 4])
-    ax2.set_ylim([-8, -2])
-
-    fig.savefig('goes_area.eps', format='eps', dpi=1200)
-
-
-def fl_flare_plot(df):
-    """dsdsd
-    """
-    ydata = df['COR2_V'].astype('float64')
-
-    sizecircle = 16
-
-    bounds = np.array([-7, -6, -5, -4, -3])
-    cdata = np.log10(df['FL_GOES'].astype('float64'))
-    vmin = -7.
-    vmax = -3.
-    cm = LinearSegmentedColormap.from_list('parula', cm_data)
-
-    fig, (ax1, ax2) = plt.subplots(1,2, sharey=True)
-
-    fig.subplots_adjust(left = 0.05, right = 0.9, bottom = 0.1, top = 0.5, wspace = 0.2, hspace = 0.65)
-
-    im = ax1.scatter(x = np.log10(df['FL_GOES'].astype('float64')), y=ydata,
-                            s=sizecircle, c=cdata,
-                            cmap=cm, norm=mpl.colors.BoundaryNorm(boundaries=bounds, ncolors=256),
-                            lw = 0)
-    ax1.set_xlabel(r'GOES Flux')
-    ax1.set_yscale('log')
-    ax1.set_xlim([-8, -3])
-
-    ax2.scatter(x = np.log10(df['FL_DURATION'].astype('float64')), y=ydata,
-                       s=sizecircle, c=cdata,
-                       cmap=cm, norm=mpl.colors.BoundaryNorm(boundaries=bounds, ncolors=256),
-                       lw=0)
-    ax2.set_xlabel(r'Flare duration')
-    ax2.set_yscale('log')
-    ax2.set_xlim([0, 3])
-
-
-    fig.savefig('flare_flare.eps', format='eps', dpi=1200)
-
-def fl_halo_plot(df):
-    """dsdsd
-    """
-    ydata = df['COR2_V'].astype('float64')
-
-    sizecircle = 16
-
-    cdata = df['COR2_WIDTH']
-    vmin = 0.
-    vmax = 360.
-    cm = plt.cm.get_cmap('viridis')
-
-    fig, (ax1, ax2) = plt.subplots(1,2, sharey=True)
-
-    fig.subplots_adjust(left = 0.05, right = 0.9, bottom = 0.1, top = 0.5, wspace = 0.2, hspace = 0.65)
-
-    im = ax1.scatter(x = np.log10(df['FL_GOES'].astype('float64')), y=ydata,
-                            s=sizecircle, c=cdata,
-                            cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-                            lw = 0)
-    ax1.set_xlabel(r'GOES Flux')
-    ax1.set_yscale('log')
-    ax1.set_xlim([-8, -3])
-
-    ax2.scatter(x = np.log10(df['FL_DURATION'].astype('float64')), y=ydata,
-                       s=sizecircle, c=cdata,
-                       cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-                       lw=0)
-    ax2.set_xlabel(r'Flare duration')
-    ax2.set_yscale('log')
-    ax2.set_xlim([0, 3])
-
-
-    fig.savefig('flare_halo.eps', format='eps', dpi=1200)
-
-def srs_flare_plot(df):
-    """dsdsd
-    """
-    ydata = df['COR2_V'].astype('float64')
-    ymin = 0.
-    ymax = 1500.
-
-    sizecircle = 16
-
-    bounds = np.array([-7, -6, -5, -4, -3])
-    cdata = np.log10(df['FL_GOES'].astype('float64'))
-    vmin = -7.
-    vmax = -3.
-    cm = LinearSegmentedColormap.from_list('parula', cm_data)
-
-    fig, (ax1, ax2, ax3) = plt.subplots(1,3, sharey=True)
-
-    fig.subplots_adjust(left = 0.05, right = 0.9, bottom = 0.1, top = 0.5, wspace = 0.2, hspace = 0.65)
-
-    im = ax1.scatter(x = np.log10(df['SRS_AREA'].astype('float64')), y=ydata,
-                            s=sizecircle, c=cdata,
-                            cmap=cm, norm=mpl.colors.BoundaryNorm(boundaries=bounds, ncolors=256),
-                            lw = 0)
-    ax1.set_xlabel(r'Area [m.s.h.]')
-    ax1.set_yscale('log')
-    ax1.set_xlim([0, 4])
-
-    ax2.scatter(x = np.log10(df['SRS_LL'].astype('float64')), y=ydata,
-                       s=sizecircle, c=cdata,
-                       cmap=cm, norm=mpl.colors.BoundaryNorm(boundaries=bounds, ncolors=256),
-                       lw=0)
-    ax2.set_xlabel(r'Longitudinal extent [$^{\circ}$]')
-    ax2.set_yscale('log')
-    ax2.set_xlim([0, 2])
-
-    ax3.scatter(x = np.log10(df['SRS_NN'].astype('float64')), y=ydata,
-                       s=sizecircle, c=cdata,
-                       cmap=cm, norm=mpl.colors.BoundaryNorm(boundaries=bounds, ncolors=256),
-                       lw=0)
-    ax3.set_xlabel(r'No. visible spots')
-    ax3.set_yscale('log')
-    ax3.set_xlim([0, 3])
-
-    fig.savefig('srs_flare.eps', format='eps', dpi=1200)
-
-def srs_halo_plot(df):
-    """dsdsd
-    """
-    ydata = df['COR2_V'].astype('float64')
-
-    sizecircle = 16
-
-    cdata = df['COR2_WIDTH']
-    vmin = 0.
-    vmax = 360.
-    cm = plt.cm.get_cmap('viridis')
-
-    fig, (ax1, ax2, ax3) = plt.subplots(1,3, sharey=True)
-
-    fig.subplots_adjust(left = 0.05, right = 0.9, bottom = 0.1, top = 0.5, wspace = 0.2, hspace = 0.65)
-
-    im = ax1.scatter(x = np.log10(df['SRS_AREA'].astype('float64')), y=ydata,
-                            s=sizecircle, c=cdata,
-                            cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-                            lw = 0)
-    ax1.set_xlabel(r'Area [m.s.h.]')
-    ax1.set_yscale('log')
-    ax1.set_xlim([0, 4])
-
-    ax2.scatter(x = np.log10(df['SRS_LL'].astype('float64')), y=ydata,
-                       s=sizecircle, c=cdata,
-                       cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-                       lw=0)
-    ax2.set_xlabel(r'Longitudinal extent [$^{\circ}$]')
-    ax2.set_yscale('log')
-    ax2.set_xlim([0, 2])
-
-    ax3.scatter(x = np.log10(df['SRS_NN'].astype('float64')), y=ydata,
-                       s=sizecircle, c=cdata,
-                       cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-                       lw=0)
-    ax3.set_xlabel(r'No. visible spots')
-    ax3.set_yscale('log')
-    ax3.set_xlim([0, 3])
-
-    fig.savefig('srs_halo.eps', format='eps', dpi=1200)
-
-def smart_flare_plot(df):
-    """dsdsd
-    """
-    ydata = df['COR2_V'].astype('float64')
-    ymin = 0.
-    ymax = 1500.
-
-    sizecircle = 16
-
-    bounds = np.array([-7, -6, -5, -4, -3])
-    cdata = np.log10(df['FL_GOES'].astype('float64'))
-    vmin = -7.
-    vmax = -3.
-    cm = LinearSegmentedColormap.from_list('parula', cm_data)
-
-    fig, axes = plt.subplots(nrows=4, ncols=2, sharey='row')
-
-    # fig.subplots_adjust(left = 0.08, right = 1.02, bottom = 0.08, top = 0.98, wspace = 0.25, hspace = 0.5)
-    fig.subplots_adjust(left = 0.35, right = .9, bottom = 0.1, top = 0.98, wspace = 0.3, hspace = 0.65)
-
-    im = axes[0, 0].scatter(x = np.log10(np.abs(df['SMART_BMIN'].astype('float64'))), y=ydata,
-                            s=sizecircle, c=cdata,
-                            cmap=cm, norm=mpl.colors.BoundaryNorm(boundaries=bounds, ncolors=256),
-                            lw = 0)
-    axes[0, 0].set_xlabel(r'B$_\mathrm{{min}}$ [G]')
-    axes[0, 0].set_xlim([2.5, 4])
-    axes[0, 0].set_xticks([2.5, 3, 3.5, 4])
-
-    axes[0, 1].scatter(x = np.log10(df['SMART_BMAX'].astype('float64')), y=ydata,
-                       s=sizecircle, c=cdata,
-                       cmap=cm, norm=mpl.colors.BoundaryNorm(boundaries=bounds, ncolors=256),
-                       lw=0) #norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax
-    axes[0, 1].set_xlabel(r'B$_\mathrm{{max}}$ [G]')
-    axes[0, 1].set_xlim([2.5, 4])
-    axes[0, 1].set_xticks([2.5, 3, 3.5, 4])
-
-
-    axes[1, 0].scatter(x = np.log10(df['SMART_TOTAREA'].astype('float64')), y=ydata,
-                       s=sizecircle, c=cdata,
-                       cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-                       lw=0)
-    axes[1, 0].set_xlabel(r'Total area [m.s.h]')
-    axes[1, 0].set_xlim([1, 4])
-    axes[1, 0].set_xticks([1, 2, 3, 4])
-
-
-    axes[1, 1].scatter(x = np.log10(df['SMART_TOTFLX'].astype('float64')), y=ydata,
-                       s=sizecircle, c=cdata,
-                       cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-                       lw=0)
-    axes[1, 1].set_xlabel(r'Total flux [Mx]')
-    axes[1, 1].set_xlim([21, 24])
-    axes[1, 1].set_xticks([21, 22, 23, 24])
-
-    axes[2, 0].scatter(x = np.log10(df['SMART_PSLLEN'].astype('float64')), y = ydata,
-                       s=sizecircle, c = cdata,
-                       cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-                       lw=0)
-    axes[2, 0].set_xlabel(r'PSL length [Mm]')
-    axes[2, 0].set_xlim([0,4])
-    axes[2, 0].set_xticks([0, 1, 2, 3, 4])
-    axes[2, 0].set_ylabel(r'                              CME speed [kms$^{-1}$]')
-
-    axes[2, 1].scatter(x = np.log10(df['SMART_BIPOLESEP'].astype('float64')), y = ydata,
-                       s=sizecircle, c = cdata,
-                       cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-                       lw=0)
-    axes[2, 1].set_xlabel(r'Bipole separation [Mm]')
-    axes[2, 1].set_xlim([0,3])
-    axes[2, 1].set_xticks([0, 1, 2, 3])
-
-    axes[3, 0].scatter(x = df['SMART_RVALUE'].astype('float64'), y = ydata,
-                       s=sizecircle, c = cdata,
-                       cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-                       lw=0)
-    axes[3, 0].set_xlabel(r'R value [Mx]')
-    axes[3, 0].set_xlim([3,7])
-    axes[3, 0].set_xticks([3, 4, 5, 6, 7])
-
-    axes[3, 1].scatter(x = df['SMART_WLSG'].astype('float64'), y = ydata,
-                       s=sizecircle, c = cdata,
-                       cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-                       lw=0)
-    axes[3, 1].set_xlabel(r'WLsg [GMm$^{-1}$]')
-    axes[3, 1].set_xlim([2,7])
-
-    for ax in axes.flat:
-        ax.set_ylim([ymin, ymax])
-        ax.set_yscale('log')
-    cb = fig.colorbar(im, ax=axes.ravel().tolist(), aspect=20)
-    cb.set_label(r"CME width [$^{\circ}$]")
-    # cb.ax.xaxis.set_ticks_position('top')
-    # cb.ax.xaxis.set_label_position('top')
-    #, shrink=0.75
-
-    fig.savefig('smart_flare.eps', format='eps', dpi=1200)
-
-def smart_halo_plot(df):
-    """dsdsd
-    """
-    ydata = df['COR2_V'].astype('float64')
-    ymin = 0.
-    ymax = 1500.
-
-    sizecircle = 16
-
-    cdata = df['COR2_WIDTH']
-    vmin = 0.
-    vmax = 360.
-    cm = plt.cm.get_cmap('viridis')
-
-    fig, axes = plt.subplots(nrows=4, ncols=2, sharey='row')
-
-    # fig.subplots_adjust(left = 0.08, right = 1.02, bottom = 0.08, top = 0.98, wspace = 0.25, hspace = 0.5)
-    fig.subplots_adjust(left = 0.35, right = .9, bottom = 0.1, top = 0.98, wspace = 0.3, hspace = 0.65)
-
-    im = axes[0, 0].scatter(x = np.log10(np.abs(df['SMART_BMIN'].astype('float64'))), y=ydata,
-                            s=sizecircle, c=cdata,
-                            cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-                            lw = 0)
-    axes[0, 0].set_xlabel(r'B$_\mathrm{{min}}$ [G]')
-    axes[0, 0].set_xlim([2.5, 4])
-    axes[0, 0].set_xticks([2.5, 3, 3.5, 4])
-
-    axes[0, 1].scatter(x = np.log10(df['SMART_BMAX'].astype('float64')), y=ydata,
-                       s=sizecircle, c=cdata,
-                       cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-                       lw=0)
-    axes[0, 1].set_xlabel(r'B$_\mathrm{{max}}$ [G]')
-    axes[0, 1].set_xlim([2.5, 4])
-    axes[0, 1].set_xticks([2.5, 3, 3.5, 4])
-
-
-    axes[1, 0].scatter(x = np.log10(df['SMART_TOTAREA'].astype('float64')), y=ydata,
-                       s=sizecircle, c=cdata,
-                       cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-                       lw=0)
-    axes[1, 0].set_xlabel(r'Total area [m.s.h]')
-    axes[1, 0].set_xlim([1, 4])
-    axes[1, 0].set_xticks([1, 2, 3, 4])
-
-
-    axes[1, 1].scatter(x = np.log10(df['SMART_TOTFLX'].astype('float64')), y=ydata,
-                       s=sizecircle, c=cdata,
-                       cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-                       lw=0)
-    axes[1, 1].set_xlabel(r'Total flux [Mx]')
-    axes[1, 1].set_xlim([21, 24])
-    axes[1, 1].set_xticks([21, 22, 23, 24])
-
-    axes[2, 0].scatter(x = np.log10(df['SMART_PSLLEN'].astype('float64')), y = ydata,
-                       s=sizecircle, c = cdata,
-                       cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-                       lw=0)
-    axes[2, 0].set_xlabel(r'PSL length [Mm]')
-    axes[2, 0].set_xlim([0,4])
-    axes[2, 0].set_xticks([0, 1, 2, 3, 4])
-    axes[2, 0].set_ylabel(r'                              CME speed [kms$^{-1}$]')
-
-    axes[2, 1].scatter(x = np.log10(df['SMART_BIPOLESEP'].astype('float64')), y = ydata,
-                       s=sizecircle, c = cdata,
-                       cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-                       lw=0)
-    axes[2, 1].set_xlabel(r'Bipole separation [Mm]')
-    axes[2, 1].set_xlim([0,3])
-    axes[2, 1].set_xticks([0, 1, 2, 3])
-
-    axes[3, 0].scatter(x = df['SMART_RVALUE'].astype('float64'), y = ydata,
-                       s=sizecircle, c = cdata,
-                       cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-                       lw=0)
-    axes[3, 0].set_xlabel(r'R value [Mx]')
-    axes[3, 0].set_xlim([3,7])
-    axes[3, 0].set_xticks([3, 4, 5, 6, 7])
-
-    axes[3, 1].scatter(x = df['SMART_WLSG'].astype('float64'), y = ydata,
-                       s=sizecircle, c = cdata,
-                       cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-                       lw=0)
-    axes[3, 1].set_xlabel(r'WLsg [GMm$^{-1}$]')
-    axes[3, 1].set_xlim([2,7])
-
-    for ax in axes.flat:
-        ax.set_ylim([ymin, ymax])
-        ax.set_yscale('log')
-    cb = fig.colorbar(im, ax=axes.ravel().tolist())
-    cb.set_label(r"CME width [$^{\circ}$]")
-    # cb.ax.xaxis.set_ticks_position('top')
-    # cb.ax.xaxis.set_label_position('top')
-    #, shrink=0.75
-
-    fig.savefig('smart_halo.eps', format='eps', dpi=1200)
-
-    # axes[0, 2].scatter(x = df['SMART_BMEAN'].astype('float64'), y=ydata,
-    #                    s=sizecircle, c=cdata,
-    #                    cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-    #                    lw=0)
-    # axes[0, 2].set_xlabel('Bmean')
-    # axes[0, 2].set_xlim([-100, 100])
-
-    # axes[0, 2].scatter(x = np.log10(df['SMART_POSAREA'].astype('float64')), y=ydata,
-    #                    s=sizecircle, c=cdata,
-    #                    cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-    #                    lw=0)
-    # axes[0, 2].set_xlabel('+ve area')
-    # axes[0, 2].set_xlim([0, 4])
-    # axes[0, 2].set_xticks([0, 1, 2, 3, 4])
-    #
-    # axes[0, 3].scatter(x = np.log10(df['SMART_NEGAREA'].astype('float64')), y=ydata,
-    #                    s=sizecircle, c=cdata,
-    #                    cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-    #                    lw=0)
-    # axes[0, 3].set_xlabel('-ve area')
-    # axes[0, 3].set_xlim([0, 4])
-    # axes[0, 3].set_xticks([0, 1, 2, 3, 4])
-    #
-    # axes[1, 1].scatter(x = np.log10(df['SMART_NEGFLX'].astype('float64')), y=ydata,
-    #                    s=sizecircle, c=cdata,
-    #                    cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-    #                    lw=0)
-    # axes[1, 1].set_xlabel('-ve Flux')
-    # axes[1, 1].set_xlim([20, 24])
-    # axes[1, 1].set_xticks([20, 21, 22, 23, 24])
-    #
-    # axes[1, 2].scatter(x = np.log10(df['SMART_POSFLX'].astype('float64')), y=ydata,
-    #                    s=sizecircle, c=cdata,
-    #                    cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-    #                    lw=0)
-    # axes[1, 2].set_xlabel('+ve Flux')
-    # axes[1, 2].set_xlim([20, 24])
-    # axes[1, 2].set_xticks([20, 21, 22, 23, 24])
-    #
-    # axes[1, 3].scatter(x = np.log10(df['SMART_FRCFLX'].astype('float64')), y=ydata,
-    #                    s=sizecircle, c=cdata,
-    #                    cmap=cm, norm=mpl.colors.Normalize(vmin=vmin, vmax=vmax),
-    #                    lw=0)
-    # axes[1, 3].set_xlabel('abs Flux Fraction')
-    # axes[1, 3].set_xlim([-5, 0])
-
 
 
 def fix_data(outstr):
@@ -772,6 +263,7 @@ def calculate_flare_duration(data_start, data_end):
             continue
     return data_out
 
+
 def get_plotly_trace(xdata, ydata,
                      weightdata, colourdata, colourdata_title,
                      colourdata_max, colourdata_min, colourdata_step,
@@ -799,6 +291,7 @@ def get_plotly_trace(xdata, ydata,
                                                   dtick=colourdata_step)
                                   )
                       )
+
 
 def plotly_multi(x1data, x1title,
                  x2data, x2title,
@@ -942,6 +435,7 @@ def plotly_multi(x1data, x1title,
                                    )
     py.iplot(fig, filename=filedata)
 
+
 def plotly_double(x1data, x1title,
                  x2data, x2title,
                  y1data, y1title, y1range,
@@ -1001,6 +495,7 @@ def plotly_double(x1data, x1title,
                                    domain=[0.6, 1.0]
                                    )
     py.iplot(fig, filename=filedata)
+
 
 if __name__ == '__main__':
     main()
