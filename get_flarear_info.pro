@@ -74,7 +74,7 @@ function get_flarear_info, $
 ; 		0: flare_del = ssw_deltat(flare_ts, flare_tf, /minutes) * (10./500.)
 ; 		1: flare_del = ssw_deltat(flare_ts, flare_tf, /minutes) * (float(cme_properties.cor2_vsigma)/float(cme_properties.cor2_v))
 ; 	endcase
-; 	; Redefine search window to include error
+; ; 	; Redefine search window to include error
 ; 	flare_ts = anytim(addtime(anytim(flare_ts,/vms), delta_min = -flare_del))
 ; 	flare_tf = anytim(addtime(anytim(flare_tf,/vms), delta_min = flare_del))
 
@@ -132,7 +132,7 @@ function get_flarear_info, $
 																	hi_pan = cme_properties.hi_pan, hi_pas = cme_properties.hi_pas, cor2_pa = cme_properties.cor2_pa, cor2_halo = cme_properties.cor2_halo, $
 																	flare = flare, cme_exist = cme_exist, $
 																	hcx_range = hcx_range, hcy_range = hcy_range)
- 
+
 			; Output this info
 ;			if typename(swpcstr) ne 'STRING' then begin
 			if swpcstr.fl_starttime ne ' ' then begin
@@ -141,13 +141,16 @@ function get_flarear_info, $
 				outstr.fl_endtime = swpcstr.fl_endtime
 				outstr.fl_peaktime = swpcstr.fl_peaktime
 				outstr.fl_goes = swpcstr.fl_goes
-				outstr.fl_loc = swpcstr.fl_loc
 				outstr.srs_no = swpcstr.srs_no
 				flare = swpcstr.flare
-				hgx = swpcstr.hgx
-				hgy = swpcstr.hgy
-				hcx = swpcstr.hcx
-				hcy = swpcstr.hcy
+				;found some swpc events with the wrong location listed so this is to remove spurious polar regions
+				if (abs(swpcstr.hgy) le 45.) then begin
+					outstr.fl_loc = swpcstr.fl_loc
+					hgx = swpcstr.hgx
+					hgy = swpcstr.hgy
+					hcx = swpcstr.hcx
+					hcy = swpcstr.hcy
+				endif
 			endif
 
 	endif else begin
@@ -170,7 +173,7 @@ function get_flarear_info, $
 																	hi_pan = cme_properties.hi_pan, hi_pas = cme_properties.hi_pas, cor2_pa = cme_properties.cor2_pa, cor2_halo = cme_properties.cor2_halo, $
 																	flare = flare, cme_exist = cme_exist, $
 																	hcx_range = hcx_range, hcy_range = hcy_range)
-		
+
 		; Output this info
 ;		if typename(hessistr) ne 'STRING' then begin
 		if hessistr.fl_starttime ne ' ' then begin
