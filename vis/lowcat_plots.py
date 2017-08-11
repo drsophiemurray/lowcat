@@ -12,7 +12,7 @@ Notes:
 
 '''
 
-CAT_FOLDER = '/home/somurray/Dropbox/lowcat/results/'
+CAT_FOLDER = '/Users/sophie/Dropbox/lowcat/results/'
 JSON_FILE = 'lowcat.json'
 SAV_FILE = 'lowcat.sav' #outstr and cmelist
 
@@ -80,6 +80,9 @@ def main():
 
     # Calculate flare duration
     df['FL_DURATION'] = calculate_flare_duration(df['FL_STARTTIME'], df['FL_ENDTIME'])
+    df['COR2_TS'] = pd.to_datetime(df['COR2_TS'], format='%d-%b-%Y %H:%M:%S.%f')
+    df['COR2_TF'] = pd.to_datetime(df['COR2_TF'], format='%d-%b-%Y %H:%M:%S.%f')
+    df['COR2_DURATION'] = calculate_flare_duration(df['COR2_TS'], df['COR2_TF'])
 
     # CME property histograms
     #   barmode(overlay | group | stack)
@@ -88,31 +91,34 @@ def main():
     #   histfunc('count' | 'sum' | 'avg' | 'min' | 'max')
 
     cf.set_config_file(offline=False, world_readable=True, theme='pearl')
-    # df_cme = df[['COR2_V', 'COR2_WIDTH']]
-    # df_cme.iplot(kind='histogram', subplots=True, shape=(2, 1),
-    #              filename='cme_v_width_hist',
-    #              histnorm='percent')
 
-    # df_flare = df[['FL_GOES']]
-    # df_flare.iplot(kind='histogram', subplots=False,
-    #              filename='flare_hist',
-    #              histnorm='percent')
+    ##already made so commenting out
+    # df['FL_GOES'] = np.log10(df['FL_GOES'].astype('float64'))
+    # df_cme_hists = df[['COR2_WIDTH', 'COR2_V',
+    #                    'FL_GOES', 'FL_DURATION']]
+    # df_cme_hists.iplot(kind='histogram', subplots=True, shape=(2, 2),
+    #                    filename='cmeflare_hist',
+    #                    histnorm='percent')
 
-    # df_smart = df[['SMART_TOTAREA', 'SMART_TOTFLX', 'SMART_BMAX',
-    #                'SMART_PSLLEN', 'SMART_RVALUE', 'SMART_WLSG']]
-    # df_smart.iplot(kind='histogram', subplots=True, shape=(3, 2),
-    #                filename='smart_property_hist',
-    #                histnorm='percent')
+    ##already made so commenting out
+    # df_smart_hists = df[['SMART_TOTAREA', 'SMART_TOTFLX',
+    #                    'SMART_BMIN', 'SMART_BMAX',
+    #                    'SMART_PSLLEN', 'SMART_BIPOLESEP',
+    #                    'SMART_RVALUE', 'SMART_WLSG']]
+    # df_smart_hists.iplot(kind='histogram', subplots=True, shape=(4, 2),
+    #                    filename='smart_hist',
+    #                    histnorm='percent')
 
-    df_hists = df[['COR2_V', 'COR2_WIDTH',
-                   'SMART_TOTAREA', 'SMART_TOTFLX',
-                   'SMART_BMAX', 'SMART_PSLLEN',
-                   'SMART_RVALUE', 'SMART_WLSG']]
-    df_hists.iplot(kind='histogram', subplots=True, shape=(4, 2),
-                   filename='paper_hist',
-                   histnorm='percent')
+    csvdata = pd.read_csv(CAT_FOLDER+'fcastexc.csv')
 
-
+    df_flarecast_hists = csvdata[['total (FC data.sharp kw.usiz)', 'Value Int', 'R Value Br Logr',
+                             'total (FC data.sharp kw.usflux)', 'ave (FC data.sharp kw.ushz)', 'total (FC data.sharp kw.ushz)',
+                             'ising energy (FC data.ising energy blos)', 'max (FC data.sharp kw.usiz)', 'Tot L Over Hmin',
+                             'R Value Blos Logr', 'max (FC data.sharp kw.jz)', 'Alpha',
+                             'ave (FC data.sharp kw.usflux)', 'ising energy (FC data.ising energy br)', 'ave (FC data.sharp kw.usiz)']]
+    df_flarecast_hists.iplot(kind='histogram', subplots=True, shape=(5, 3),
+                             filename='fcast_hist',
+                             histnorm='percent')
 
     # messed with pandas and realised didnt have python 3
     # plt.figure()
