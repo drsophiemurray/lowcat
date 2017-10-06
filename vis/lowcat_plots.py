@@ -111,14 +111,14 @@ def main():
 
     csvdata = pd.read_csv(CAT_FOLDER+'fcastexc.csv')
 
-    df_flarecast_hists = csvdata[['total (FC data.sharp kw.usiz)', 'Value Int', 'R Value Br Logr',
-                             'total (FC data.sharp kw.usflux)', 'ave (FC data.sharp kw.ushz)', 'total (FC data.sharp kw.ushz)',
-                             'ising energy (FC data.ising energy blos)', 'max (FC data.sharp kw.usiz)', 'Tot L Over Hmin',
-                             'R Value Blos Logr', 'max (FC data.sharp kw.jz)', 'Alpha',
-                             'ave (FC data.sharp kw.usflux)', 'ising energy (FC data.ising energy br)', 'ave (FC data.sharp kw.usiz)']]
-    df_flarecast_hists.iplot(kind='histogram', subplots=True, shape=(5, 3),
-                             filename='fcast_hist',
-                             histnorm='percent')
+    # df_flarecast_hists = csvdata[['total (FC data.sharp kw.usiz)', 'Value Int', 'R Value Br Logr',
+    #                          'total (FC data.sharp kw.usflux)', 'ave (FC data.sharp kw.ushz)', 'total (FC data.sharp kw.ushz)',
+    #                          'ising energy (FC data.ising energy blos)', 'max (FC data.sharp kw.usiz)', 'Tot L Over Hmin',
+    #                          'R Value Blos Logr', 'max (FC data.sharp kw.jz)', 'Alpha',
+    #                          'ave (FC data.sharp kw.usflux)', 'ising energy (FC data.ising energy br)', 'ave (FC data.sharp kw.usiz)']]
+    # df_flarecast_hists.iplot(kind='histogram', subplots=True, shape=(5, 3),
+    #                          filename='fcast_hist',
+    #                          histnorm='percent')
 
     # messed with pandas and realised didnt have python 3
     # plt.figure()
@@ -129,16 +129,16 @@ def main():
     ##already made so commenting out
     # srs_area_complexity(df=df)
 
-    # #plot goes flux and wlsg halo
-    # plotly_double(x1data = np.log10(df['FL_GOES'].astype('float64')),  x1title = 'GOES Flux [Wm-2]',
-    #               x2data = df['SMART_WLSG'].astype('float64'), x2title='WLsg [G/Mm]',
-    #               y1data = df['COR2_V'], y1title = 'CME Speed [ms<sup>-1</sup>]',
-    #               y1range = [0, 2000],
-    #               weightdata = '10',
-    #               colourdata = df['COR2_WIDTH'].astype('float64'), colourdata_title='CME width [<sup>o</sup>]',
-    #               colourdata_max=360, colourdata_min=0, colourdata_step=45,
-    #               filedata = 'halo_cme_properties',
-    #               colourscale = 'Viridis')
+    #plot goes flux and wlsg halo
+    plotly_double(x1data = np.log10(df['FL_GOES'].astype('float64')),  x1title = 'GOES Flux [Wm-2]',
+                  x2data = df['SMART_WLSG'].astype('float64'), x2title='WLsg [G/Mm]',
+                  y1data = np.log10(df['COR2_V'].astype('float64')), y1title = 'CME Speed [ms<sup>-1</sup>]',
+                  y1range = [0, 2000],
+                  weightdata = '10',
+                  colourdata = df['COR2_WIDTH'].astype('float64'), colourdata_title='CME width [<sup>o</sup>]',
+                  colourdata_max=360, colourdata_min=0, colourdata_step=45,
+                  filedata = 'halo_cme_properties_log10_colour',
+                  colourscale = 'Viridis')
 
 
     ##already made so commenting out
