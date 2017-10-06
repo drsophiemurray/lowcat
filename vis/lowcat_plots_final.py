@@ -109,13 +109,13 @@ def main():
     #                    filename='smart_hist',
     #                    histnorm='percent')
 
-    csvdata = pd.read_csv(CAT_FOLDER+'fcastexc.csv')
+    csvdata = pd.read_csv(CAT_FOLDER+'flarecast_list.csv') #('fcastexc.csv')
 
-    df_flarecast_hists = csvdata[['total (FC data.sharp kw.usiz)', 'Value Int', 'R Value Br Logr',
-                             'total (FC data.sharp kw.usflux)', 'ave (FC data.sharp kw.ushz)', 'total (FC data.sharp kw.ushz)',
-                             'ising energy (FC data.ising energy blos)', 'max (FC data.sharp kw.usiz)', 'Tot L Over Hmin',
-                             'R Value Blos Logr', 'max (FC data.sharp kw.jz)', 'Alpha',
-                             'ave (FC data.sharp kw.usflux)', 'ising energy (FC data.ising energy br)', 'ave (FC data.sharp kw.usiz)']]
+    df_flarecast_hists = csvdata[['total (FC data.sharp kw.usiz)', 'max (FC data.sharp kw.usiz)', 'max (FC data.sharp kw.jz)',
+                                  'Value Int', 'R Value Br Logr', 'total (FC data.sharp kw.usflux)',
+                                  'ave (FC data.sharp kw.ushz)', 'total (FC data.sharp kw.ushz)', 'max (FC data.sharp kw.ushz)',
+                                  'ising energy (FC data.ising energy blos)', 'tot_uns_dedt', 'Tot L Over Hmin',
+                                  'max (FC data.sharp kw.hgradbh)', 'Alpha']]
     df_flarecast_hists.iplot(kind='histogram', subplots=True, shape=(5, 3),
                              filename='fcast_hist_final',
                              histnorm='percent')
@@ -130,38 +130,38 @@ def main():
     # srs_area_complexity(df=df)
 
     #plot goes flux and wlsg halo
-    plotly_double(x1data = np.log10(df['FL_GOES'].astype('float64')),  x1title = 'GOES Flux [Wm-2]',
-                  x2data = df['SMART_WLSG'].astype('float64'), x2title='WLsg [G/Mm]',
-                  y1data = np.log10(df['COR2_V'].astype('float64')), y1title = 'CME Speed [ms<sup>-1</sup>]',
-                  y1range = [2, 3.2],
-                  weightdata = '10',
-                  colourdata = df['COR2_WIDTH'].astype('float64'), colourdata_title='CME width [<sup>o</sup>]',
-                  colourdata_max=360, colourdata_min=0, colourdata_step=90,
-                  filedata = 'halo_cme_properties_log10_colour',
-                  colourscale='Viridis')
+    # plotly_double(x1data = np.log10(df['FL_GOES'].astype('float64')),  x1title = 'GOES Flux [Wm-2]',
+    #               x2data = df['SMART_WLSG'].astype('float64'), x2title='WLsg [G/Mm]',
+    #               y1data = np.log10(df['COR2_V'].astype('float64')), y1title = 'CME Speed [ms<sup>-1</sup>]',
+    #               y1range = [2, 3.2],
+    #               weightdata = '10',
+    #               colourdata = df['COR2_WIDTH'].astype('float64'), colourdata_title='CME width [<sup>o</sup>]',
+    #               colourdata_max=360, colourdata_min=0, colourdata_step=90,
+    #               filedata = 'halo_cme_properties_log10_colour',
+    #               colourscale='Viridis')
 
     ##already made so commenting out
-    plotly_multi(x1data = np.log10(np.abs(df['SMART_BMIN'].astype('float64'))),  x1title = 'Bmin [G]',
-                 x2data = np.log10(df['SMART_BMAX'].astype('float64')), x2title = 'Bmax [G]',
-                 x3data = np.log10(df['SMART_TOTAREA'].astype('float64')), x3title='Total area [m.s.h]',
-                 x4data = np.log10(df['SMART_TOTFLX'].astype('float64')), x4title='Total flux [Mx]',
-                 x5data = df['SMART_RVALUE'].astype('float64'), x5title='R value [Mx]',
-                 x6data = df['SMART_WLSG'].astype('float64'), x6title='WLsg [G/Mm]',
-                 y1data = np.log10(df['COR2_V'].astype('float64')), y1title = 'CME Speed [kms<sup>-1</sup>]',
-                 y1range = [2, 3.2],
-                 weightdata = '10',
-                 colourdata = np.log10(df['FL_GOES'].astype('float64')), colourdata_title = 'GOES Flux [Wm-2]',
-                 colourdata_max = -3, colourdata_min = -7, colourdata_step = 1,
-                 filedata = 'smart_properties_paper_log10',
-                 colourscale=[[0, 'rgb(54,50,153)'],
-                              [0.25, 'rgb(54,50,153)'],
-                              [0.25, 'rgb(17,123,215)'],
-                              [0.5, 'rgb(17,123,215)'],
-                              [0.5, 'rgb(37,180,167)'],
-                              [0.75, 'rgb(37,180,167)'],
-                              [0.75, 'rgb(249,210,41)'],
-                              [1.0, 'rgb(249,210,41)']]
-                 )
+    # plotly_multi(x1data = np.log10(np.abs(df['SMART_BMIN'].astype('float64'))),  x1title = 'Bmin [G]',
+    #              x2data = np.log10(df['SMART_BMAX'].astype('float64')), x2title = 'Bmax [G]',
+    #              x3data = np.log10(df['SMART_TOTAREA'].astype('float64')), x3title='Total area [m.s.h]',
+    #              x4data = np.log10(df['SMART_TOTFLX'].astype('float64')), x4title='Total flux [Mx]',
+    #              x5data = df['SMART_RVALUE'].astype('float64'), x5title='R value [Mx]',
+    #              x6data = df['SMART_WLSG'].astype('float64'), x6title='WLsg [G/Mm]',
+    #              y1data = np.log10(df['COR2_V'].astype('float64')), y1title = 'CME Speed [kms<sup>-1</sup>]',
+    #              y1range = [2, 3.2],
+    #              weightdata = '10',
+    #              colourdata = np.log10(df['FL_GOES'].astype('float64')), colourdata_title = 'GOES Flux [Wm-2]',
+    #              colourdata_max = -3, colourdata_min = -7, colourdata_step = 1,
+    #              filedata = 'smart_properties_paper_log10',
+    #              colourscale=[[0, 'rgb(54,50,153)'],
+    #                           [0.25, 'rgb(54,50,153)'],
+    #                           [0.25, 'rgb(17,123,215)'],
+    #                           [0.5, 'rgb(17,123,215)'],
+    #                           [0.5, 'rgb(37,180,167)'],
+    #                           [0.75, 'rgb(37,180,167)'],
+    #                           [0.75, 'rgb(249,210,41)'],
+    #                           [1.0, 'rgb(249,210,41)']]
+    #              )
 
 def srs_area_complexity(df):
     """
