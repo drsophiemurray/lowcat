@@ -111,13 +111,18 @@ def main():
 
     csvdata = pd.read_csv(CAT_FOLDER+'flarecast_list.csv') #('fcastexc.csv')
 
-    df_flarecast_hists = csvdata[['total (FC data.sharp kw.usiz)', 'max (FC data.sharp kw.usiz)', 'max (FC data.sharp kw.jz)',
-                                  'Value Int', 'R Value Br Logr', 'total (FC data.sharp kw.usflux)',
-                                  'ave (FC data.sharp kw.ushz)', 'total (FC data.sharp kw.ushz)', 'max (FC data.sharp kw.ushz)',
-                                  'ising energy (FC data.ising energy blos)', 'tot_uns_dedt', 'Tot L Over Hmin',
-                                  'max (FC data.sharp kw.hgradbh)', 'Alpha']]
-    df_flarecast_hists.iplot(kind='histogram', subplots=True, shape=(5, 3),
-                             filename='fcast_hist_final',
+    # df_flarecast_hists_sharp = csvdata[['total (FC data.sharp kw.usiz)', 'max (FC data.sharp kw.usiz)',
+    #                               'ave (FC data.sharp kw.ushz)', 'max (FC data.sharp kw.ushz)',
+    #                               'total (FC data.sharp kw.usflux)', 'max (FC data.sharp kw.jz)',
+    #                               'max (FC data.sharp kw.hgradbh)']]
+    # df_flarecast_hists_sharp.iplot(kind='histogram', subplots=True, shape=(4, 2),
+    #                          filename='fcast_hist_final_sharp',
+    #                          histnorm='percent')
+    df_flarecast_hists = csvdata[['Value Int', 'R Value Br Logr',
+                                  'Ising Energy', 'Abs Tot Dedt',
+                                  'Tot L Over Hmin', 'Alpha']]
+    df_flarecast_hists.iplot(kind='histogram', subplots=True, shape=(3, 2),
+                             filename='fcast_hist_final0',
                              histnorm='percent')
 
     # messed with pandas and realised didnt have python 3
