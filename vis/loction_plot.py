@@ -62,7 +62,7 @@ for event in enumerate(data):
 
 #sunpy.data.download_sample_data()
 #header = {'b0':0.0}
-map1 = sunpy.map.Map(sunpy.data.sample.AIA_171_IMAGE)
+map1 = sunpy.map.Map('AIA20140606_0000_0094.fits')
 map1.data = np.zeros(map1.data.shape)
 jb0 = map1.heliographic_latitude.value*u.deg
 #map1 = sunpy.map.Map((mapp.data,header))
