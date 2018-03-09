@@ -106,14 +106,21 @@ def main():
     # Figure 5 top: GOES flux and WLSG vs CME speed. Colourbar shows angular width (halo)
     plotly_double(x1data = np.log10(df['FL_GOES'].astype('float64')),  x1title = 'GOES Flux [Wm-2]',
                   x2data = df['SMART_WLSG'].astype('float64'), x2title='WLsg [G/Mm]',
-                  y1data = np.log10(df['COR2_V'].astype('float64')), y1title = 'CME Speed [ms<sup>-1</sup>]',
-                  y1range = [2, 3.2],
+                  y1data = df['COR2_V'].astype('float64'), y1title = 'CME Speed [ms<sup>-1</sup>]',
+                  y1range = [0., 2000.],
                   weightdata = '10',
                   colourdata = df['COR2_WIDTH'].astype('float64'), colourdata_title='CME width [<sup>o</sup>]',
                   colourdata_max=360, colourdata_min=0, colourdata_step=90,
-                  filedata = 'halo_cme_properties_log10_colour',
-                  colourscale='Viridis'
-                  )
+                  filedata = 'halo_cme_properties_new_colorscale',
+                  colourscale=[[0, 'rgb(54,50,153)'],
+                               [0.25, 'rgb(54,50,153)'],
+                               [0.25, 'rgb(17,123,215)'],
+                               [0.5, 'rgb(17,123,215)'],
+                               [0.5, 'rgb(37,180,167)'],
+                               [0.75, 'rgb(37,180,167)'],
+                               [0.75, 'rgb(249,210,41)'],
+                               [1.0, 'rgb(249,210,41)']]
+                  ) #'Viridis'
 
     # Figure 5 bottom: Bmin.max, Total area and flux, PSL length, and R value vs CME speed. Colours show flare class.
     plotly_multi(x1data = np.log10(np.abs(df['SMART_BMIN'].astype('float64'))),  x1title = 'Bmin [G]',
