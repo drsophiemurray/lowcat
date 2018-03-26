@@ -2,6 +2,7 @@ lowcat
 =======
 
 *Obtaining the source regions of CME events determined with STEREO/HI for the FP7 [HELCATS](http://www.helcats-fp7.eu/) project.*
+[![DOI](https://zenodo.org/badge/89452379.svg)](https://zenodo.org/badge/latestdoi/89452379)
 
 This repository contains the code and resulting data for the LOWCAT catalogue developed during the EU HELCATS project, an automated method to correspond CME events to their solar active region sources. The original code developed by Pietro Zucca outputted a .html file that can currently be viewed on the Rosse Observatory [webpages](http://data.rosseobservatory.ie/helcats/lowcat/). This code has been modified and extended (``helcats_list.pro``) to obtain active region properties also.
 
